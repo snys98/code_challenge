@@ -1,0 +1,11 @@
+{
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#f83184",
+        "titleBar.activeBackground": "#f83184",
+        "titleBar.activeForeground": "#FFFBFD"
+    },
+    "cSpell.enableFiletypes": [
+        "*"
+    ],
+    "vsicons.presets.nestjs": true
+}

@@ -1,0 +1,61 @@
+我现在需要完成一个code_challenge, 主要是需要实现一个 user login 的 REST API, 
+
+业务要求如下:        
+1. 用户可以通过用户名和密码登录      
+2. 如果用户名和密码正确, 返回一个 JWT token
+3. 如果用户名和密码不匹配, 返回失败
+4. 用户最多有3次尝试机会, 如果超过3次, 用户将被锁定
+5. 如果用户被锁定, 返回失败
+6. 假定已有用户数据, 不需要实现用户注册功能
+技术要求:        
+1. 使用 Nest.js + typescript 实现后端api
+2. 使用 React + Antd 实现前端页面
+3. 使用 Mongoose 和 MongoDB, 已有的用户数据使用migration实现
+4. 使用 Jest 实现前后端各自的单元测试以及集成测试 
+5. 使用 docker-compose 启动整个项目, 包括前端, 后端, 数据库, 并且可以通过浏览器访问前端页面, 通过 postman 访问后端 api
+
+这是我考虑的项目结构, 
+/code_challenge  
+├── /apps  
+│   ├── /api  
+│   │   ├── /src  
+│   │   │   ├── /app.module.ts  
+│   │   │   ├── /main.ts  
+│   │   │   ├── /user  
+│   │   │   │   ├── /user.module.ts  
+│   │   │   │   ├── /user.service.ts  
+│   │   │   │   ├── /user.controller.ts  
+│   │   │   │   └── /user.entity.ts  
+│   │   │   └── /auth  
+│   │   │       ├── /auth.module.ts  
+│   │   │       ├── /auth.service.ts  
+│   │   │       ├── /auth.controller.ts  
+│   │   │       └── /jwt.strategy.ts  
+│   │   ├── /test  
+│   │   │   ├── /user.service.spec.ts  
+│   │   │   └── /auth.service.spec.ts  
+│   │   ├── /node_modules  
+│   │   ├── /package.json  
+│   │   ├── /tsconfig.json  
+│   │   ├── /jest.config.js  
+│   │   ├── /.eslintrc.json  
+│   │   ├── /Dockerfile  
+│   │   └── /README.md  
+│   └── /app  
+│       ├── /src  
+│       │   ├── /App.tsx  
+│       │   ├── /index.tsx  
+│       │   └── /components  
+│       │       ├── /LoginForm.tsx  
+│       │       └── /HomePage.tsx  
+│       ├── /public  
+│       ├── /node_modules  
+│       ├── /package.json  
+│       ├── /tsconfig.json  
+│       ├── /jest.config.js  
+│       ├── /.eslintrc.json  
+│       ├── /Dockerfile  
+│       └── /README.md  
+└── /docker-compose.yml  
+
+请给我api和app对应的dockerfile

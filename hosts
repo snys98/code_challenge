@@ -1,0 +1,9 @@
+# these are hosts entries used by current project, we recommend you use https://switchhosts.vercel.app/zh to manage your hosts entries
+127.0.0.1 app.dev.sapia.ai
+127.0.0.1 api.dev.sapia.ai
+127.0.0.1 elasticsearch
+127.0.0.1 kibana
+127.0.0.1 apm-server
+127.0.0.1 logstash
+127.0.0.1 redis
+127.0.0.1 mongo
