@@ -1,17 +1,23 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UserService } from '../user/user.service';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { User } from '../user/user.entity';
 
 @Injectable()
 export class AuthService {
+    private readonly logger = new Logger(AuthService.name);
     constructor(
-        private readonly userService: UserService,
+        @InjectModel('User') private readonly userModel: Model<User>,
         private readonly jwtService: JwtService,
     ) { }
 
     async validateUser(username: string, password: string): Promise<any> {
-        const user = await this.userService.validateUser(username, password);
-        if (user) {
+        // eslint-disable-next-line prefer-rest-params
+        this.logger.log("validating user");
+        const user = await this.userModel.findOne({ username }).exec();
+        this.logger.log(user);
+        if (user && user.password === password) {
             const { password, ...result } = user;
             return result;
         }

@@ -6,5 +6,6 @@
     },
     "cSpell.enableFiletypes": [
         "*"
-    ]
+    ],
+    "vsicons.presets.nestjs": true
 }
