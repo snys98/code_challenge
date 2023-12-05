@@ -6,7 +6,7 @@ export class AppController {
 
   @Get()
   @Post()
-  heathCheck(): string {
+  hello(): string {
     return "ok";
   }
 }
