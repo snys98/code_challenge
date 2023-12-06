@@ -4,9 +4,10 @@ import express from 'express';
 import ObjectId from 'bson-objectid';
 import { pino } from 'pino';
 import ecsFormat from '@elastic/ecs-pino-format';
-import { LoggerModule } from 'nestjs-pino';
+import { LoggerModule, Params } from 'nestjs-pino';
+import { log } from "console";
 
-export function createLoggerModule(config:LoggerModuleConfig) {
+export function createLoggerModule(config: LoggerModuleConfig) {
     const streamToElastic = pinoElastic({
         index(logTime: string) {
             return `${config.appName}-${logTime.substr(0, 10)}`;
@@ -36,27 +37,29 @@ export function createLoggerModule(config:LoggerModuleConfig) {
         { stream: streamToElastic },
     ]))
 
-    const excludeLoggingPaths = ["/health", "/auth"];
+    const excludeLoggingPaths = [];
     const LoggerModuleConfig = {
         pinoHttp: {
-            autoLogging: {
-                ignore: (req: express.Request) => {
-                    for (const path of excludeLoggingPaths) {
-                        if (req.path.startsWith(path)) {
-                            return false;
-                        }
-                    }
-                    return true;
-                },
-            },
+            quietReqLogger: true,
+            level: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
+            autoLogging: true,
             redact: process.env.NODE_ENV !== 'production' ? [] : {
-                paths: ['req.headers.authorization'],
+                paths: ['req.headers.authorization', 'req.headers.cookie'],
                 censor: '**********',
+            },
+            customLogLevel(req, res, error) {
+                if (error || res.statusCode >= 500) {
+                    return 'error';
+                }
+                if (res.statusCode >= 400) {
+                    return 'warn';
+                }
+                return 'info';
             },
             logger: pinoLogger,
             genReqId: (req, res) => new ObjectId(new Date().getTime()).toHexString(),
         },
-    };
+    } as Params;
 
     return LoggerModule.forRoot(LoggerModuleConfig);
 }

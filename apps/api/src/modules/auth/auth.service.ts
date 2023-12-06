@@ -3,12 +3,15 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from '../user/user.entity';
+import Redis from 'ioredis/built/Redis';
+import { InjectRedis } from '@liaoliaots/nestjs-redis';
 
 @Injectable()
 export class AuthService {
     private readonly logger = new Logger(AuthService.name);
     constructor(
         @InjectModel('User') private readonly userModel: Model<User>,
+        @InjectRedis() private readonly redis: Redis,
         private readonly jwtService: JwtService,
     ) { }
 
@@ -29,6 +32,7 @@ export class AuthService {
             userId: user.userId,
             access_token: this.jwtService.sign(payload),
         };
+        await this.redis.set(`session:${user.userId}`, tokenModel.access_token);
         return tokenModel;
     }
 }  
