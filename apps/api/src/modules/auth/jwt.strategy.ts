@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, ExtractJwt } from 'passport-jwt';
 import { AuthService } from './auth.service';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy,"jwt") {
+export class JwtStrategy extends PassportStrategy(Strategy, "local") {
+    private readonly logger = new Logger(JwtStrategy.name);
     constructor(private readonly authService: AuthService) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -14,6 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy,"jwt") {
     }
 
     async validate(payload: any) {
+        this.logger.log("validating payload.", payload);
         // you can add more validation logic here  
         return { userId: payload.sub, username: payload.username };
     }
