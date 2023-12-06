@@ -7,67 +7,78 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { HealthModule } from './modules/health/health.module';
 import { LoggerModule } from 'nestjs-pino';
 import * as eshelper from '@elastic/ecs-helpers';
+import pinoElastic from "pino-elasticsearch";
+import pinoMultiStream from "pino-multi-stream";
+import express from 'express';
+import ObjectId from 'bson-objectid';
+
+const streamToElastic = pinoElastic({
+  index(logTime: string) {
+    return `api-${logTime.substr(0, 10)}`;
+  },
+  node: 'http://elasticsearch:9200',
+  auth: {
+    username: 'elastic',
+    password: 'sapia123456'
+  },
+  esVersion: 8,
+  flushBytes: 1000,
+});
+// Capture errors like unable to connect Elasticsearch instance.
+streamToElastic.on('error', (error) => {
+  console.error('Elasticsearch client error:', error);
+})
+// Capture errors returned from Elasticsearch, "it will be called every time a document can't be indexed".
+streamToElastic.on('insertError', (error) => {
+  console.error('Elasticsearch server error:', error);
+})
+
+const excludeLoggingPaths = ["/health", "/auth"];
 @Module({
   imports: [
     LoggerModule.forRoot({
       pinoHttp: {
-        level: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
-        // install 'pino-pretty' package in order to use the following option
-        transport: process.env.NODE_ENV !== 'production' ? { target: 'pino-pretty' } : undefined,
+        autoLogging: {
+          ignore: (req: express.Request) => {
+            for (const path of excludeLoggingPaths) {
+              if (req.path.startsWith(path)) {
+                return false;
+              }
+            }
+            return true;
+          },
+        },
+        redact: process.env.NODE_ENV !== 'production' ? [] : {
+          paths: ['req.headers.authorization'],
+          censor: '**********',
+        },
+        stream: pinoMultiStream.multistream([
+          { stream: process.stdout },
+          { stream: streamToElastic },
+        ]),
+        genReqId: (req, res) => new ObjectId(new Date().getTime()).toHexString(),
         customAttributeKeys: {
-          req: 'http.request',
-          res: 'http.response',
-          responseTime: 'event.duration',
+          req: 'http.req',
+          res: 'http.res',
+          responseTime: 'http.duration', 
         },
         messageKey: 'message',
         timestamp: () => `,"@timestamp":"${new Date().toISOString()}"`,
         serializers: {
-          'http.response': (object: any) => {
-            const { statusCode, ...response } = object;
+          'http.res': (response: express.Response) => {
             return {
               ...response,
-              status_code: statusCode,
             };
           },
-          'http.request': () => {
-            // here you can perform headers transformation
+          'http.req': (request: express.Request) => {
+            return {
+              ...request,
+              params: undefined,
+            };
           },
         },
         formatters: {
-          bindings(bindings: Record<string, unknown>) {
-            const {
-              // `pid` and `hostname` are default bindings, unless overriden by
-              // a `base: {...}` passed to logger creation.
-              pid,
-              hostname,
-              // name is defined if `log = pino({name: 'my name', ...})`
-              name,
-              // Warning: silently drop any "ecs" value from `base`. See
-              // "ecs.version" comment below.
-              ecs,
-              ...ecsBindings
-            } = bindings;
-            if (pid !== undefined) {
-              // https://www.elastic.co/guide/en/ecs/current/ecs-process.html#field-process-pid
-              ecsBindings.process = { pid: pid };
-            }
-            if (hostname !== undefined) {
-              // https://www.elastic.co/guide/en/ecs/current/ecs-host.html#field-host-hostname
-              ecsBindings.host = { hostname: hostname };
-            }
-            if (name !== undefined) {
-              // https://www.elastic.co/guide/en/ecs/current/ecs-log.html#field-log-logger
-              ecsBindings.log = { logger: name };
-            }
-            return ecsBindings;
-          },
-          level: (label: string) => ({ 'log.level': label }),
-          log: (o: object) => {
-            //@ts-ignore
-            const { error, ...ecsObject } = o;
-            eshelper.formatError(ecsObject, error);
-            return ecsObject;
-          },
+          level: (label: string) => ({ 'level': label }),
         },
       },
     }),

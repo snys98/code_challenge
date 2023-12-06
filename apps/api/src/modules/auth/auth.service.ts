@@ -16,7 +16,6 @@ export class AuthService {
         // eslint-disable-next-line prefer-rest-params
         this.logger.log("validating user");
         const user = await this.userModel.findOne({ username }).exec();
-        this.logger.log(user);
         if (user && user.password === password) {
             const { password, ...result } = user;
             return result;
