@@ -1,3 +1,4 @@
+import ObjectID from 'bson-objectid';
 import * as mongoose from 'mongoose';
 
 export const UserSchema = new mongoose.Schema({

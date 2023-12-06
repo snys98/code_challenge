@@ -37,6 +37,6 @@ describe('AuthService', () => {
     });
 
     it('should generate token', async () => {
-        expect(await service.login({ username: 'test' })).toEqual({ access_token: 'token' });
+        expect(await service.signIn({ username: 'test' })).toEqual({ access_token: 'token' });
     });
 });
