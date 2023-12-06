@@ -22,8 +22,9 @@ export class UserService {
 
     async seedData() {
         const result = await this.userModel.insertMany([
-            { username: 'admin', password: 'admin', locked: false },
-            { username: 'user', password: 'user', locked: false },
+            //md5
+            { username: 'admin', password: '21232f297a57a5a743894a0e4a801fc3', locked: false },
+            { username: 'user', password: 'ee11cbb19052e40b07aac0ca060c23ee', locked: false },
         ]);
         this.logger.log(`Seeded data: ${result}`);
     }

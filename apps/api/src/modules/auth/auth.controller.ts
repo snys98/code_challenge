@@ -8,8 +8,9 @@ export class AuthController {
 
     @Post('login')
     async login(@Body() body) {
-        if (await this.authService.validateUser(body.username, body.password)) {
-            return this.authService.login(body);
+        const user = await this.authService.validateUser(body.username, body.password);
+        if (user) {
+            return this.authService.login(user);
         };
         throw new HttpException('Invalid credentials', 400);
         

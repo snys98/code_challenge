@@ -39,6 +39,7 @@ export function createLoggerModule(config: LoggerModuleConfig) {
 
     const excludeLoggingPaths = [];
     const LoggerModuleConfig = {
+        exclude:["auth"],
         pinoHttp: {
             quietReqLogger: true,
             level: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',

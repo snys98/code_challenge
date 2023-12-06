@@ -1,27 +1,40 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Form, Input, Button, message } from 'antd';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import md5 from 'md5';
-
+import { AuthContext } from './providers/app-providers';
 /* 一个简单的登录表单, 明文传递了数据, 固定了登录地址
 生产环境中应当使用redirect来实现后端登录(OAuth2.0)
 */
-const Login = () => {
+const Login = ({ loggedInCallback }) => {
     const [loading, setLoading] = useState(false);
+    const { setAccessToken } = useContext(AuthContext)
+
 
     const onFinish = async ({ username, password }: { username: string, password: string }) => {
         setLoading(true);
         try {
             const values = { username, password: md5(password) };
             const response = await axios.post('https://api.dev.sapia.ai/auth/login', values);
-            const token = response.data.token;
+            console.log(response);
+            const token = response.data.access_token;
             // 在这里可以将 token 存储到本地存储或者cookie中，以便以后的请求使用
-            if (!token) {
-                throw new Error('登录失败');
+            if (token) {
+                message.success('Login success.');
+                setAccessToken(token);
+                loggedInCallback();
             }
-            message.success('登录成功');
+            else {
+                throw new Error(response.data.message || "Login failed.");
+            }
+
         } catch (error) {
-            message.error("登录失败");
+            if (error instanceof AxiosError) {
+                message.error(error.response?.data?.message || "Login failed.");
+            }
+            else {
+                message.error("Login failed.");
+            }
         }
         setLoading(false);
     };

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, BadRequestException, Logger, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, BadRequestException, Logger, UseGuards, Get } from '@nestjs/common';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -13,10 +13,11 @@ export class UserController {
         this.logger.log("Seeding data");
         return this.userService.seedData();
     }
-    
-    @UseGuards(AuthGuard('jwt'))
-    @Post("getUsers")
-    getUsers() {
-        return this.userService.getUsers();
+
+    @UseGuards(AuthGuard('local'))
+    @Get()
+    async getUsers() {
+        const users = await this.userService.getUsers();
+        return users.map(user => user.toObject());
     }
 }  
