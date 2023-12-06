@@ -1,17 +1,35 @@
 import { MongooseModule } from '@nestjs/mongoose';
 import { createLoggerModule } from './create-logger-module';
+import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { RedisHealthModule } from "@liaoliaots/nestjs-redis-health";
+import { TerminusModule } from '@nestjs/terminus';
+import { HttpModule } from '@nestjs/axios';
 
-function createMongooseModule(mongoUri) {
-    return MongooseModule.forRoot(mongoUri, {
+function createMongooseModule(config: MongooseModuleConfig) {
+    return MongooseModule.forRoot(config.mongoUri, {
         replicaSet: "rs0",
         autoCreate: true,
         readPreference: "primaryPreferred",
     });
 }
 
-export function createSharedModules(envConfig) {
+function createRedisModule(config: RedisModuleConfig) {
+    return RedisModule.forRoot({
+        config,
+        readyLog: true,
+        commonOptions: {
+            db: 0,
+        }
+    });
+}
+
+export function createSharedModules(envConfig: SharedModulesConfig) {
     return [
-        createLoggerModule(envConfig),
-        createMongooseModule(envConfig.mongoUri),
+        HttpModule,
+        TerminusModule,
+        createLoggerModule(envConfig.logger),
+        createRedisModule(envConfig.redis),
+        RedisHealthModule,
+        createMongooseModule(envConfig.mongoose),
     ];
 }

@@ -6,18 +6,18 @@ import { pino } from 'pino';
 import ecsFormat from '@elastic/ecs-pino-format';
 import { LoggerModule } from 'nestjs-pino';
 
-export function createLoggerModule(envConfig) {
+export function createLoggerModule(config:LoggerModuleConfig) {
     const streamToElastic = pinoElastic({
         index(logTime: string) {
-            return `api-${logTime.substr(0, 10)}`;
+            return `${config.appName}-${logTime.substr(0, 10)}`;
         },
-        node: envConfig.esNode,
+        node: config.esNode,
         auth: {
-            username: envConfig.esUsername,
-            password: envConfig.esPassword,
+            username: config.esUsername,
+            password: config.esPassword,
         },
-        esVersion: envConfig.esVersion,
-        flushBytes: envConfig.flushBytes,
+        esVersion: 8,
+        flushBytes: 1000,
     });
 
     streamToElastic.on('error', (error) => {
