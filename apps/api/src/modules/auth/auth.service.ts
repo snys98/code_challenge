@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -15,24 +15,27 @@ export class AuthService {
         private readonly jwtService: JwtService,
     ) { }
 
-    async validateUser(username: string, password: string): Promise<User> {
+    async validateUser(username: string, password: string): Promise<Partial<User>> {
         this.logger.log("validating user");
         const user = await this.userModel.findOne({ username }).exec();
         if (user && user.password === password) {
+            const { password, ...result } = user.toObject();
             return user;
         }
-        return null;
+        throw new UnauthorizedException();
     }
 
-    async login(user: User) {
-        console.log(user);
-        const payload = { username: user.username, sub: user.id };
-        const tokenModel = {
-            userId: user.id,
-            access_token: this.jwtService.sign(payload),
+    async signIn(user: Partial<User>) {
+        const payload = {
+            sub: user.id,
+            id: user.id,
+            username: user.username,
         };
-        this.logger.log(user);
-        await this.redis.setex(`session:${user.id}`, 60 * 60 * 24 * 7, tokenModel.access_token);
+        const tokenModel = {
+            id: user.id,
+            access_token: await this.jwtService.signAsync(payload),
+        };
+        await this.redis.setex(`session:${user.id}`, 60 * 60 * 24 * 7, JSON.stringify(tokenModel));
         return tokenModel;
     }
 }  

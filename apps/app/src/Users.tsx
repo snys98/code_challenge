@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Table } from 'antd';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { AuthContext } from "./providers/AuthContext";
 
 /* 一个简单的登录表单, 明文传递了数据, 固定了登录地址
@@ -38,6 +38,11 @@ const Users = () => {
             })
             .catch((error) => {
                 console.error("Error fetching users", error);
+                if (error instanceof AxiosError) {
+                    if (error.response?.status === 401) {
+                        setAccessToken("");
+                    }
+                }
             });
     }, [])
 

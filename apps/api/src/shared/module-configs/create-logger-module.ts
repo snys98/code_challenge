@@ -5,17 +5,17 @@ import ObjectId from 'bson-objectid';
 import { pino } from 'pino';
 import ecsFormat from '@elastic/ecs-pino-format';
 import { LoggerModule, Params } from 'nestjs-pino';
-import { log } from "console";
+import { AppConfig } from "../../app.config";
 
-export function createLoggerModule(config: LoggerModuleConfig) {
+export function createLoggerModule({ logger }: AppConfig) {
     const streamToElastic = pinoElastic({
         index(logTime: string) {
-            return `${config.appName}-${logTime.substr(0, 10)}`;
+            return `${logger.appName}-${logTime.substr(0, 10)}`;
         },
-        node: config.esNode,
+        node: logger.esNode,
         auth: {
-            username: config.esUsername,
-            password: config.esPassword,
+            username: logger.esUsername,
+            password: logger.esPassword,
         },
         esVersion: 8,
         flushBytes: 1000,
@@ -37,9 +37,8 @@ export function createLoggerModule(config: LoggerModuleConfig) {
         { stream: streamToElastic },
     ]))
 
-    const excludeLoggingPaths = [];
     const LoggerModuleConfig = {
-        exclude:["auth"],
+        exclude: ["auth"],
         pinoHttp: {
             quietReqLogger: true,
             level: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
