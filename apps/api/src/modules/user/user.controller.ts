@@ -11,7 +11,7 @@ export class UserController {
     @Post("seedData")
     seedData() {
         this.logger.log("Seeding data");
-        return this.userService.seedData();
+        this.userService.seedData();
     }
 
     @UseGuards(AuthGuard('local'))

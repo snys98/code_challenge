@@ -1,10 +1,10 @@
-import { createContext, useState } from "react";
-
-export const AuthContext = createContext<{ accessToken?: string, setAccessToken(token:string):void }>({ accessToken: undefined, setAccessToken(token) {
-  this.accessToken = token;
-}, });
+import { AuthContext } from "./AuthContext";
+import useLocalStorageState from 'use-local-storage-state';
 export const AppProviders = ({ children }) => {
-  const [accessToken, setAccessToken] = useState("Initial value");
+  const [accessToken, setAccessToken] = useLocalStorageState<string>('accessToken', {
+    defaultValue: "",
+    storageSync: true
+  });
 
   return (
     <AuthContext.Provider value={{ accessToken, setAccessToken }}>

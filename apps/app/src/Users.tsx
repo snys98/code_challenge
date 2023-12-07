@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Table } from 'antd';
+import { Button, Table } from 'antd';
 import axios from 'axios';
-import { AuthContext } from './providers/app-providers';
+import { AuthContext } from "./providers/AuthContext";
 
 /* 一个简单的登录表单, 明文传递了数据, 固定了登录地址
 生产环境中应当使用redirect来实现后端登录(OAuth2.0)
 */
 const Users = () => {
-    const { accessToken } = useContext(AuthContext)
+    const { accessToken, setAccessToken } = useContext(AuthContext)
     const [users, setUsers] = useState([]);
     const columns = [
         {
@@ -43,7 +43,12 @@ const Users = () => {
 
 
     return (
-        <Table pagination={false} columns={columns} dataSource={users} />
+        <>
+            <Table pagination={false} columns={columns} dataSource={users} />
+            <Button type="primary" onClick={() => {
+                setAccessToken("");
+            }}>Logout</Button>
+        </>
     );
 };
 

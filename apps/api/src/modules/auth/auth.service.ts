@@ -16,7 +16,6 @@ export class AuthService {
     ) { }
 
     async validateUser(username: string, password: string): Promise<User> {
-        // eslint-disable-next-line prefer-rest-params
         this.logger.log("validating user");
         const user = await this.userModel.findOne({ username }).exec();
         if (user && user.password === password) {
