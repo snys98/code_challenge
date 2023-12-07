@@ -1,32 +1,12 @@
-import { MongooseModule } from '@nestjs/mongoose';
-import { createLoggerModule } from './create-logger-module';
-import { RedisModule } from '@liaoliaots/nestjs-redis';
+import { createLoggerModule } from './logger-module';
 import { RedisHealthModule } from "@liaoliaots/nestjs-redis-health";
 import { TerminusModule } from '@nestjs/terminus';
 import { HttpModule } from '@nestjs/axios';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 import { AppConfig } from '../../app.config';
-
-function createMongooseModule({ mongoose }: AppConfig) {
-    return MongooseModule.forRoot(mongoose.mongoUri, {
-        replicaSet: "rs0",
-        autoCreate: true,
-        readPreference: "primaryPreferred",
-    });
-}
-
-function createRedisModule({ redis }: AppConfig) {
-    return RedisModule.forRoot({
-        readyLog: true,
-        commonOptions: {
-            db: 0,
-        },
-        config: {
-            ...redis
-        }
-    });
-}
+import { createMongooseModule } from './mongoose-module';
+import { createRedisModule } from './redis-module';
 
 export function createRootModules(config: AppConfig) {
     return [
@@ -47,7 +27,7 @@ export function createSharedModules(config: AppConfig) {
             signOptions: { expiresIn: '60m', ...config.jwt?.signOptions },
             verifyOptions: {
                 ignoreExpiration: true,
-            }
+            },
         }),
     ];
 }

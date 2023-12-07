@@ -8,9 +8,10 @@ export const AppConfig = {
   logger: {
     appName: process.env.APP_NAME || "api",
     esNode: process.env.ES_NODE || 'http://elasticsearch:9200',
+    apmUrl: process.env.APM_URL || 'http://apm-server:8200',
     esUsername: process.env.ES_USERNAME || 'elastic',
     esPassword: process.env.ES_PASSWORD || 'sapia123456',
-  } as LoggerModuleConfig,
+  },
   redis: {
     host: process.env.REDIS_HOST || 'redis',
     port: process.env.REDIS_PORT || 6379,
@@ -18,12 +19,13 @@ export const AppConfig = {
   jwt: {
     secret: process.env.JWT_SECRET_KEY || "secretKey",
   } as JwtModuleOptions
-};
+} as AppConfig;
 export declare type LoggerModuleConfig = {
-  appName: any;
-  esNode: string;
-  esUsername: string;
-  esPassword: string;
+  apmUrl?: string;
+  appName: string;
+  esNode?: string;
+  esUsername?: string;
+  esPassword?: string;
 };
 
 export declare type RedisModuleConfig = RedisClientOptions | RedisClientOptions[];
@@ -33,7 +35,7 @@ export declare type MongooseModuleConfig = {
 };
 export declare type AppConfig = {
   mongoose: MongooseModuleConfig,
-  logger?: LoggerModuleConfig,
+  logger: LoggerModuleConfig,
   redis: RedisModuleConfig,
   jwt?: JwtModuleConfig,
 };

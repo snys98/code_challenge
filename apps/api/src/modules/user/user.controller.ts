@@ -1,4 +1,4 @@
-import { Controller, Post, Body, BadRequestException, Logger, UseGuards, Get } from '@nestjs/common';
+import { Controller, Post, Logger, UseGuards, Get } from '@nestjs/common';
 import { UserService } from './user.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CurrentUser } from '../../shared/decorators/current-user.decorator';
@@ -18,7 +18,6 @@ export class UserController {
     @UseGuards(AuthGuard('local'))
     @Get()
     async getUsers(@CurrentUser() user: UserProfile) {
-        console.log(user);
         const users = await this.userService.getUsers();
         return users.map(user => user.toObject());
     }

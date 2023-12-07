@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import SwaggerOptions from './swagger';
 import { HttpExceptionFilter } from './shared/filters/http-exception.filter';
-import { Logger, LoggerErrorInterceptor } from 'nestjs-pino';
+import { WINSTON_MODULE_NEST_PROVIDER, } from 'nest-winston';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
@@ -15,8 +15,7 @@ async function bootstrap() {
   });
   app.enableCors();
   app.useGlobalFilters(new HttpExceptionFilter());
-  app.useGlobalInterceptors(new LoggerErrorInterceptor());
-  app.useLogger(app.get(Logger));
+  app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
   await app.listen(3000);
 }
 bootstrap();

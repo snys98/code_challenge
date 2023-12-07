@@ -16,7 +16,6 @@ const Login = () => {
         try {
             const values = { username, password: md5(password) };
             const response = await axios.post('https://api.dev.sapia.ai/auth/login', values);
-            console.log(response);
             const token = response.data.access_token;
             if (token) {
                 message.success('Login success.');

@@ -15,7 +15,6 @@
     "postinstall": ""
   },
   "dependencies": {
-    "is-binary": "^0.1.0",
-    "nestjs-pino": "^3.5.0"
+    "is-binary": "^0.1.0"
   }
 }
