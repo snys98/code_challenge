@@ -1,9 +1,13 @@
+import './shared/extensions';
+
+import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+
 import { NestFactory } from '@nestjs/core';
+import { SwaggerModule } from '@nestjs/swagger';
+
 import { AppModule } from './app.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import SwaggerOptions from './swagger';
 import { HttpExceptionFilter } from './shared/filters/http-exception.filter';
-import { WINSTON_MODULE_NEST_PROVIDER, } from 'nest-winston';
+import SwaggerOptions from './swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bufferLogs: true });

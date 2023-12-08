@@ -1,11 +1,17 @@
-import ecsFormat from '@elastic/ecs-winston-format';
-import { AppConfig } from "../../app.config";
-import winston, { transport } from "winston";
-import { ElasticsearchTransport } from "winston-elasticsearch";
-import apm from "elastic-apm-node"
-import { WinstonModule, utilities as nestWinstonModuleUtilities } from 'nest-winston';
+import ObjectID from 'bson-objectid';
+import apm from 'elastic-apm-node';
+import {
+  utilities as nestWinstonModuleUtilities,
+  WinstonModule,
+} from 'nest-winston';
+import winston, { transport } from 'winston';
+import { ElasticsearchTransport } from 'winston-elasticsearch';
 
-export function createLoggerModule({ logger }: AppConfig) {
+import { ecsFormat } from '@elastic/ecs-winston-format';
+
+import { AppConfig } from '../../app.config';
+
+export function createLoggerModule(appConfig: AppConfig) {
 
     const transports: transport[] = [
         new winston.transports.Console({
@@ -13,35 +19,39 @@ export function createLoggerModule({ logger }: AppConfig) {
             format: winston.format.combine(
                 winston.format.timestamp(),
                 winston.format.ms(),
-                nestWinstonModuleUtilities.format.nestLike(logger.appName, {
+                nestWinstonModuleUtilities.format.nestLike(appConfig.appName, {
                     colors: true,
                     prettyPrint: true,
                 })
             )
         }),
     ];
-    if (logger.esNode) {
+    if (appConfig.logger.esNode) {
+        const format = ecsFormat({
+            convertReqRes: true,
+            convertErr: true,
+            apmIntegration: !!appConfig.logger.apmUrl,
+        });
         const esTransport = new ElasticsearchTransport({
-            indexPrefix: logger.appName,
-            apm: logger.apmUrl ? apm.start({
-                serverUrl: logger.apmUrl,
+            indexPrefix: appConfig.appName,
+            apm: appConfig.logger.apmUrl ? apm.start({
+                serverUrl: appConfig.logger.apmUrl,
                 logLevel: "info",
-                serviceName: logger.appName,
+                serviceName: appConfig.appName,
                 useElasticTraceparentHeader: true,
             }) : undefined,
-            format: ecsFormat({
-                convertReqRes: true,
-                convertErr: true,
-                apmIntegration: !!logger.apmUrl,
-            }),
+            format: format,
             useTransformer: false,
             level: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
             clientOpts: {
-                name: logger.appName,
+                enableMetaHeader: true,
+                maxResponseSize: 10000000,
+                generateRequestId: () => { new ObjectID(Date.now()).toHexString()},
+                name: appConfig.appName,
                 node: 'http://elasticsearch:9200',
                 auth: {
-                    username: logger.esUsername,
-                    password: logger.esPassword,
+                    username: appConfig.logger.esUsername,
+                    password: appConfig.logger.esPassword,
                 },
             }
         });

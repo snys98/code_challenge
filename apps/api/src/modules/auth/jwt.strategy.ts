@@ -1,14 +1,21 @@
-import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
+import { Cache } from 'cache-manager';
+import {
+  ExtractJwt,
+  Strategy,
+} from 'passport-jwt';
+
+import {
+  Inject,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, ExtractJwt } from 'passport-jwt';
-import { InjectRedis } from '@liaoliaots/nestjs-redis';
-import Redis from 'ioredis';
-import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, "local") {
     private readonly logger = new Logger(JwtStrategy.name);
-    constructor(@InjectRedis() private readonly redis: Redis,
+    constructor(@Inject(Cache) private readonly cache: Cache,
     ) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -18,7 +25,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, "local") {
     }
 
     async validate(payload: any) {
-        const token = await this.redis.get(`session:${payload.sub}`);
+        const token = await this.cache.get(`session:${payload.sub}`);
         if (!token) {
             throw new UnauthorizedException();
         }

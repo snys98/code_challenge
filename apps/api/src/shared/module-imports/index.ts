@@ -1,19 +1,20 @@
-import { createLoggerModule } from './logger-module';
-import { RedisHealthModule } from "@liaoliaots/nestjs-redis-health";
-import { TerminusModule } from '@nestjs/terminus';
 import { HttpModule } from '@nestjs/axios';
-import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { PassportModule } from '@nestjs/passport';
+import { TerminusModule } from '@nestjs/terminus';
+import { RedisHealthModule } from '@songkeys/nestjs-redis-health';
+
 import { AppConfig } from '../../app.config';
+import { createLoggerModule } from './logger-module';
 import { createMongooseModule } from './mongoose-module';
-import { createRedisModule } from './redis-module';
+import { createCacheModule } from './redis-module';
 
 export function createRootModules(config: AppConfig) {
     return [
         HttpModule,
         TerminusModule,
         createLoggerModule(config),
-        createRedisModule(config),
+        createCacheModule(config),
         RedisHealthModule,
         createMongooseModule(config),
     ];
