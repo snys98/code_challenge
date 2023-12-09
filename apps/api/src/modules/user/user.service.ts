@@ -12,12 +12,14 @@ export class UserService {
     private readonly logger = new Logger(UserService.name);
     constructor(@InjectModel('User') private readonly userModel: Model<User>) { }
 
-    async lockUser(username: string): Promise<any> {
-        const user = await this.userModel.findOne({ username }).exec();
+    async lockUser(userId: string): Promise<boolean> {
+        const user = await this.userModel.findOne({ id: userId }).exec();
         if (user) {
             user.locked = true;
             await user.save();
+            return true;
         }
+        return false;
     }
 
     async seedData() {

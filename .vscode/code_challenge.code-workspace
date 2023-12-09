@@ -17,12 +17,7 @@
             },
             {
                 "label": "start dev reverse proxy",
-                "windows": {
-                    "command": "pwsh .\\dev_proxy.ps1"
-                },
-                "linux": {
-                    "command": "./dev_proxy.sh"
-                },
+                "command": "pwsh .\\dev_proxy.ps1",
                 "type": "shell",
                 "runOptions": {
                     "instanceLimit": 1
@@ -35,12 +30,7 @@
             },
             {
                 "label": "build all",
-                "windows": {
-                    "command": "pwsh .\\build_all.ps1"
-                },
-                "linux": {
-                    "command": "./build_all.sh"
-                },
+                "command": "pwsh .\\build_all.ps1",
                 "type": "shell",
                 "presentation": {
                     "reveal": "always"

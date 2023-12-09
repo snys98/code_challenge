@@ -10,9 +10,9 @@ export class LoggerMiddleware implements NestMiddleware {
     }
 
     public use(request: Request, response: Response, next: NextFunction): void {
-        const { body, method, originalUrl, headers } = request;
+        // const { body, method, originalUrl, headers } = request;
         // todo: log request on demand and censor sensitive data
-        this.logger.log({ body, method, originalUrl, headers })
+        // this.logger.log({ body, method, originalUrl, headers })
         next();
     }
 }

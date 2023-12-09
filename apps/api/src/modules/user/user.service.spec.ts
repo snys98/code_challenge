@@ -1,6 +1,9 @@
+import '../../shared/extensions';
+
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserService } from '../src/user/user.service';
 import { getModelToken } from '@nestjs/mongoose';
+import { UserService } from './user.service';
+import { mockData } from '../../../test/mocks/data.mock';
 
 describe('UserService', () => {
     let service: UserService;
@@ -8,14 +11,18 @@ describe('UserService', () => {
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
-                UserService,
                 {
                     provide: getModelToken('User'),
                     useValue: {
-                        findOne: jest.fn().mockResolvedValue({ username: 'test', password: 'test', locked: false }),
-                        save: jest.fn().mockResolvedValue(true),
+                        findOne: jest.fn().mockReturnValue({
+                            exec: jest.fn().mockResolvedValue({
+                                ...mockData.users.test,
+                                save: jest.fn().mockResolvedValue(true),
+                            })
+                        })
                     },
                 },
+                UserService,
             ],
         }).compile();
 
@@ -26,15 +33,10 @@ describe('UserService', () => {
         expect(service).toBeDefined();
     });
 
-    it('should validate user', async () => {
-        expect(await service.validateUser('test', 'test')).toEqual({ username: 'test', locked: false });
-        expect(await service.validateUser('test', 'wrong')).toBeNull();
-    });
-
     it('should lock user', async () => {
-        await service.lockUser('test');
+        await service.lockUser(mockData.users.test.id);
         // since we mock the "save" method to always return true,  
         // it is expected that the lockUser method will also return true  
-        expect(await service.lockUser('test')).toBe(true);
+        expect(await service.lockUser(mockData.users.test.id)).toBe(true);
     });
 });

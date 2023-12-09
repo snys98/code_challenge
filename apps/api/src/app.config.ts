@@ -14,7 +14,7 @@ export const AppConfig = {
     esPassword: process.env.ES_PASSWORD || 'sapia123456',
   },
   redis: {
-    url: process.env.REDIS_URL || "redis://redis:6379/1",
+    url: process.env.REDIS_URL || "redis://redis:6379/0",
   } as RedisClientOptions,
   jwt: {
     secret: process.env.JWT_SECRET_KEY || "secretKey",

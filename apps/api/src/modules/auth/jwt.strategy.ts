@@ -25,7 +25,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, "local") {
     }
 
     async validate(payload: any) {
-        const token = await this.cache.get(`session:${payload.sub}`);
+        const token = await this.cache.get(`Auth:Session:${payload.sub}`);
         if (!token) {
             throw new UnauthorizedException();
         }

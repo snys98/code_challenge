@@ -5,3 +5,5 @@ declare type UserProfile = {
     iat: number;
     exp: number;
 };
+
+declare type Editable<T> = { -readonly [K in keyof T]: T[K] }; 
