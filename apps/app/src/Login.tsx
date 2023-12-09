@@ -15,7 +15,7 @@ const Login = () => {
         setLoading(true);
         try {
             const values = { username, password: md5(password) };
-            const response = await axios.post('https://api.dev.sapia.ai/auth/login', values);
+            const response = await axios.post('https://api.dev.challenge/auth/login', values);
             const token = response.data.access_token;
             if (token) {
                 message.success('Login success.');
@@ -42,14 +42,14 @@ const Login = () => {
                 name="username"
                 rules={[{ required: true, message: '请输入账号' }]}
             >
-                <Input placeholder="账号" />
+                <Input placeholder="账号: admin" />
             </Form.Item>
 
             <Form.Item
                 name="password"
                 rules={[{ required: true, message: '请输入密码' }]}
             >
-                <Input.Password placeholder="密码" />
+                <Input.Password placeholder="密码: admin" />
             </Form.Item>
 
             <Form.Item>

@@ -4,7 +4,7 @@
         "tasks": [
             {
                 "label": "compose dev dependencies",
-                "command": "pwsh .\\dev_env\\init_dev_env.ps1",
+                "command": "npm i && pwsh .\\dev_env\\init_dev_env.ps1",
                 "type": "shell",
                 "presentation": {
                     "reveal": "always"
@@ -30,7 +30,7 @@
             },
             {
                 "label": "build all",
-                "command": "pwsh .\\build_all.ps1",
+                "command": "pwsh .\\build_all.ps1 && docker-compose up -d --build",
                 "type": "shell",
                 "presentation": {
                     "reveal": "always"
@@ -75,6 +75,10 @@
             "streetsidesoftware.code-spell-checker",
             "mikestead.dotenv",
             "me-dutour-mathieu.vscode-github-actions",
+            "fi3ework.vscode-antd-rush",
+            "aaron-bond.better-comments",
+            "ms-azuretools.vscode-docker",
+            "github.vscode-github-actions",
         ],
     }
 }

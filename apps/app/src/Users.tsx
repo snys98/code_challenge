@@ -23,7 +23,7 @@ const Users = () => {
     ];
 
     useEffect(() => {
-        axios.get('https://api.dev.sapia.ai/users', {
+        axios.get('https://api.dev.challenge/users', {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             }

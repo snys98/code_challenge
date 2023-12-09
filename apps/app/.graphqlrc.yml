@@ -1,10 +1,10 @@
 overwrite: true
 schema:
-  - http://api.dev.sapia.ai/graphql
+  - http://api.dev.challenge/graphql
 # extensions:
 #   endpoints:
 #     default:
-#       url: "https://api.dev.sapia.ai/graphql"
+#       url: "https://api.dev.challenge/graphql"
 #       headers:
 #         Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDEiLCJsb2dpbl9wcm92aWRlciI6IlRydXN0ZWQifQ.MLw-_WPkvIsTI_QICxR8tiOJhGRSGWI3bVNoXUm1Fhw
 documents:
