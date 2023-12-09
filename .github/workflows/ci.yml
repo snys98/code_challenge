@@ -23,21 +23,22 @@ jobs:
       id: image_tag
       run: |
         if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/tags/release_"* ]]; then  
-          echo "::set-output name=image_tag::${GITHUB_REF/refs\/tags\/}/"   
+          echo "image_tag=${GITHUB_REF/refs\/tags\/}" >> "$GITHUB_OUTPUT"
         elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/develop" ]]; then  
-          echo "::set-output name=image_tag::dev_$(date +'%Y%m%d%H%M%S')"   
+          echo "image_tag=dev_$(date +'%Y%m%d%H%M%S')" >> "$GITHUB_OUTPUT"
         elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then  
-          echo "::set-output name=image_tag::${{ github.event.inputs.ref_name }}_$(date +'%Y%m%d%H%M%S')"   
+          echo "image_tag=${{ github.event.inputs.ref_name }}_$(date +'%Y%m%d%H%M%S')" >> "$GITHUB_OUTPUT"
         fi  
         if [[ "${{ github.event.inputs.ref_name }}" == release* ]]; then  
-          echo "::set-output name=is_release::true"   
+          echo "is_release=true" >> "$GITHUB_OUTPUT"
         else  
-          echo "::set-output name=is_release::false"   
-        fi  
+          echo "is_release=false" >> "$GITHUB_OUTPUT"
+        fi
+        echo "image_tag"
+        echo "is_release"
 
 
-    - name: test
-      shell: pwsh
+    - name: Testing
       run: npm test  
 
     - name: Build all Docker images
