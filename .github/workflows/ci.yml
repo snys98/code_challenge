@@ -23,7 +23,7 @@ jobs:
       id: image_tag
       run: |
         if [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/tags/release_"* ]]; then  
-          echo "::set-output name=image_tag::${GITHUB_REF/refs\/tags\/}/"   
+          echo "::set-output name=image_tag::${GITHUB_REF/refs\/tags\/}"   
         elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/develop" ]]; then  
           echo "::set-output name=image_tag::dev_$(date +'%Y%m%d%H%M%S')"   
         elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then  
@@ -36,8 +36,7 @@ jobs:
         fi  
 
 
-    - name: test
-      shell: pwsh
+    - name: Testing
       run: npm test  
 
     - name: Build all Docker images
