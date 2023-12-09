@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Form, Input, Button, message } from 'antd';
 import axios, { AxiosError } from 'axios';
 import md5 from 'md5';

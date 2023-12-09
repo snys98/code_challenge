@@ -3,13 +3,49 @@
         "version": "2.0.0",
         "tasks": [
             {
-                "label": "start dev reverse proxy",
-                "command": "powershell .\\dev_proxy.ps1",
+                "label": "compose dev dependencies",
+                "command": "pwsh .\\dev_env\\init_dev_env.ps1",
                 "type": "shell",
                 "presentation": {
                     "reveal": "always"
                 },
                 "group": "none",
+                "runOptions": {
+                    "instanceLimit": 1
+                },
+                "problemMatcher": []
+            },
+            {
+                "label": "start dev reverse proxy",
+                "command": "pwsh .\\dev_proxy.ps1",
+                "type": "shell",
+                "runOptions": {
+                    "instanceLimit": 1
+                },
+                "presentation": {
+                    "reveal": "always"
+                },
+                "group": "none",
+                "problemMatcher": []
+            },
+            {
+                "label": "start all",
+                "command": "pwsh .\\start_all.ps1",
+                "type": "shell",
+                "presentation": {
+                    "reveal": "always"
+                },
+                "group": "none",
+                "problemMatcher": []
+            },
+            {
+                "label": "build all",
+                "command": "pwsh .\\build_all.ps1",
+                "type": "shell",
+                "presentation": {
+                    "reveal": "always"
+                },
+                "group": "build",
                 "problemMatcher": []
             }
         ]
