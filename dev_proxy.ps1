@@ -1,5 +1,5 @@
-if (Test-Path -Path "package.json" && -not (Test-Path "node_modules")) {  
-    npm install  
+if ((Test-Path -Path "package.json") -and (-not (Test-Path "node_modules"))) {  
+  npm install  
 }
 Write-Output "dev reverse proxy is running, make sure you've already setup hosts properly to access local dev env by *.dev.sapia.ai, if you're using proxy, you'll also need to bypass *.dev.sapia.ai in your proxy settings."
 

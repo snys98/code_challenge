@@ -1,41 +1,40 @@
-import type { RedisClientOptions } from "@liaoliaots/nestjs-redis";
-import type { JwtModuleOptions } from "@nestjs/jwt";
+import type { RedisClientOptions } from 'redis';
+
+import type { JwtModuleOptions } from '@nestjs/jwt';
 
 export const AppConfig = {
+  appName: process.env.APP_NAME || "api",
   mongoose: {
     mongoUri: process.env.MONGO_URI || "mongodb://mongo:27017/sapia",
   } as MongooseModuleConfig,
   logger: {
-    appName: process.env.APP_NAME || "api",
     esNode: process.env.ES_NODE || 'http://elasticsearch:9200',
     apmUrl: process.env.APM_URL || 'http://apm-server:8200',
     esUsername: process.env.ES_USERNAME || 'elastic',
     esPassword: process.env.ES_PASSWORD || 'sapia123456',
   },
   redis: {
-    host: process.env.REDIS_HOST || 'redis',
-    port: process.env.REDIS_PORT || 6379,
-  } as RedisModuleConfig,
+    url: process.env.REDIS_URL || "redis://redis:6379/1",
+  } as RedisClientOptions,
   jwt: {
     secret: process.env.JWT_SECRET_KEY || "secretKey",
   } as JwtModuleOptions
 } as AppConfig;
 export declare type LoggerModuleConfig = {
   apmUrl?: string;
-  appName: string;
   esNode?: string;
   esUsername?: string;
   esPassword?: string;
 };
 
-export declare type RedisModuleConfig = RedisClientOptions | RedisClientOptions[];
 export declare type JwtModuleConfig = JwtModuleOptions;
 export declare type MongooseModuleConfig = {
   mongoUri: string;
 };
 export declare type AppConfig = {
+  appName: string,
   mongoose: MongooseModuleConfig,
   logger: LoggerModuleConfig,
-  redis: RedisModuleConfig,
+  redis: RedisClientOptions,
   jwt?: JwtModuleConfig,
 };

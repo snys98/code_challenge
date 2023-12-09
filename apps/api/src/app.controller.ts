@@ -1,8 +1,18 @@
-import { InjectRedis } from '@liaoliaots/nestjs-redis';
-import { RedisHealthIndicator } from '@liaoliaots/nestjs-redis-health';
-import { Controller, Get, Post } from '@nestjs/common';
-import { HealthCheckService, HttpHealthIndicator, HealthCheck, MongooseHealthIndicator, HealthIndicator } from '@nestjs/terminus';
-import Redis from 'ioredis';
+// import Redis from 'ioredis';
+
+import {
+  Controller,
+  Get,
+} from '@nestjs/common';
+import {
+  HealthCheck,
+  HealthCheckService,
+  HttpHealthIndicator,
+  MongooseHealthIndicator,
+} from '@nestjs/terminus';
+
+// import { InjectRedis } from '@songkeys/nestjs-redis';
+// import { RedisHealthIndicator } from '@songkeys/nestjs-redis-health';
 
 const validateStatus = (status) => {
   return status >= 200 && status < 503;
@@ -13,8 +23,8 @@ export class AppController {
   constructor(
     private health: HealthCheckService,
     private http: HttpHealthIndicator,
-    @InjectRedis() private readonly redis: Redis,
-    private redisIndicator: RedisHealthIndicator,
+    // @InjectRedis() private readonly redis: Redis,
+    // private redisIndicator: RedisHealthIndicator,
     private mongoose: MongooseHealthIndicator,
   ) { }
 
@@ -22,12 +32,20 @@ export class AppController {
   @HealthCheck()
   check() {
     return this.health.check([
-      () => this.mongoose.pingCheck('mongo'),
-      () => this.redisIndicator.checkHealth('redis', {
-        client: this.redis,
-        type: 'redis',
+      () => this.mongoose.pingCheck('mongo', { timeout: 1000 }),
+      // () => this.redisIndicator.checkHealth('redis', {
+      //   timeout: 1000,
+      //   client: this.redis,
+      //   type: 'redis',
+      // }),
+      () => this.http.pingCheck('apm', 'http://apm-server:8200', {
+        validateStatus,
+        timeout: 1000,
       }),
-      () => this.http.pingCheck('elasticsearch', 'http://elasticsearch:9200', { validateStatus }),
+      () => this.http.pingCheck('elasticsearch', 'http://elasticsearch:9200', {
+        validateStatus,
+        timeout: 1000,
+      }),
     ]);
   }
 

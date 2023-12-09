@@ -1,0 +1,53 @@
+{
+    "tasks": {
+        "version": "2.0.0",
+        "tasks": [
+            {
+                "label": "start dev reverse proxy",
+                "command": "powershell .\\dev_proxy.ps1",
+                "type": "shell",
+                "presentation": {
+                    "reveal": "always"
+                },
+                "group": "none",
+                "problemMatcher": []
+            }
+        ]
+    },
+    "folders": [
+        {
+            "name": "ROOT",
+            "path": "../",
+        },
+        {
+            "name": "apps/api",
+            "path": "../apps/api"
+        },
+        {
+            "name": "apps/app",
+            "path": "../apps/app"
+        },
+    ],
+    "settings": {
+        "jest.disabledWorkspaceFolders": [
+            "ROOT",
+        ],
+        "workbench.colorCustomizations": {
+            "activityBar.background": "#f83184",
+            "titleBar.activeBackground": "#f83184",
+            "titleBar.activeForeground": "#FFFBFD"
+        },
+        "cSpell.enableFiletypes": [
+            "*"
+        ],
+        "vsicons.presets.nestjs": true
+    },
+    "extensions": {
+        "recommendations": [
+            "orta.vscode-jest",
+            "nguyenngoclong.terminal-keeper",
+            "streetsidesoftware.code-spell-checker",
+            "mikestead.dotenv",
+        ],
+    }
+}
