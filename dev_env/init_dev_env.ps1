@@ -1,6 +1,6 @@
 Write-Output "please make sure the following conditions are met before executing this script."
 Write-Output "1. run as *administrator*"
-Write-Output "2. have internet access to Nuget/Chocolatey through"
+Write-Output "2. have internet access to package manager mirrors"
 Write-Output "3. local 80/443 port is not occupied (such as iis)"
 Write-Output "this script will instal a dev cert into you local machine and add it to trusted root store, so that you can access https://*.dev.sapia.ai for your local development, you'll need to restart your browser after this script is executed to ensure the cert is loaded."
 $continue = Read-Host -Prompt "enter 'y' to continue";
