@@ -1,0 +1,43 @@
+name: Docker Image CD
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_name:
+        description: 'build to deploy'
+        required: true
+        default: 'latest'
+
+jobs:
+  deploy_dev:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+    - name: Deploy to Dev
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host:  ${{ vars.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        script: |
+          docker login ghcr.io -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
+          docker pull ghcr.io/${{ github.repository_owner }}/sapia/api:${{ github.event.inputs.build_name }}
+          docker pull ghcr.io/${{ github.repository_owner }}/sapia/app:${{ github.event.inputs.build_name }}
+          docker run -d --name api -p 3000:3000 ghcr.io/${{ github.repository_owner }}/sapia/api:${{ github.event.inputs.build_name }}
+          docker run -d --name app -p 4000:4000 ghcr.io/${{ github.repository_owner }}/sapia/app:${{ github.event.inputs.build_name }}
+  deploy_prod:
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+    - name: Deploy to Prod
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host:  ${{ vars.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USERNAME }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        script: |
+          docker login ghcr.io -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
+          docker pull ghcr.io/${{ github.repository_owner }}/sapia/api:${{ github.event.inputs.build_name }}
+          docker pull ghcr.io/${{ github.repository_owner }}/sapia/app:${{ github.event.inputs.build_name }}
+          docker run -d --name api -p 3000:3000 ghcr.io/${{ github.repository_owner }}/sapia/api:${{ github.event.inputs.build_name }}
+          docker run -d --name app -p 4000:4000 ghcr.io/${{ github.repository_owner }}/sapia/app:${{ github.event.inputs.build_name }}
