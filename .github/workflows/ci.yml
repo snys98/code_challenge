@@ -73,7 +73,7 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository_owner }}/challenge/api:${{ steps.extract_image_tag.outputs.image_tag }}
-            ${{ steps.extract_image_tag.outputs.is_release == 'true' && 'ghcr.io/${{ github.repository_owner }}/challenge/api:latest' || '' }}
+            ${{ steps.extract_image_tag.outputs.is_release }} == 'true' && 'ghcr.io/${{ github.repository_owner }}/challenge/api:latest' || '' }}
 
       - name: Build and push Docker image for APP
         if: success()
@@ -83,7 +83,7 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository_owner }}/challenge/app:${{ steps.extract_image_tag.outputs.image_tag}}
-            ${{ steps.extract_image_tag.outputs.is_release == 'true' && 'ghcr.io/${{ github.repository_owner }}/challenge/app:latest' || '' }}
+            ${{ steps.extract_image_tag.outputs.is_release }} == 'true' && 'ghcr.io/${{ github.repository_owner }}/challenge/app:latest' || '' }}
 
       - name: Build and push Docker image for Scheduler
         if: success()
@@ -93,7 +93,7 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ github.repository_owner }}/challenge/scheduler:${{ steps.extract_image_tag.outputs.image_tag}}
-            ${{ steps.extract_image_tag.outputs.is_release == 'true' && 'ghcr.io/${{ github.repository_owner }}/challenge/scheduler:latest' || '' }}
+            ${{ steps.extract_image_tag.outputs.is_release }} == 'true' && 'ghcr.io/${{ github.repository_owner }}/challenge/scheduler:latest' || '' }}
 
       - name: Trigger dev deployment
         if: success() && github.ref == 'refs/heads/dev'
