@@ -66,7 +66,9 @@
         "cSpell.enableFiletypes": [
             "*"
         ],
-        "vsicons.presets.nestjs": true
+        "vsicons.presets.nestjs": true,
+        "restoreTerminals.runOnStartup": true,
+        "restoreTerminals.keepExistingTerminalsOpen": true,
     },
     "extensions": {
         "recommendations": [
@@ -78,7 +80,7 @@
             "fi3ework.vscode-antd-rush",
             "aaron-bond.better-comments",
             "ms-azuretools.vscode-docker",
-            "github.vscode-github-actions",
+            "github.vscode-github-actions"
         ],
     }
 }
