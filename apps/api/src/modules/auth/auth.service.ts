@@ -10,19 +10,23 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 
-import { User } from '../user/user.entity';
+import { User, UserSchema } from '../user/user.entity';
 import { UserService } from '../user/user.service';
+import * as mongoose from 'mongoose';
 
 export const MaxFailedLoginAttempts = 3;
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
   constructor(
-    @InjectModel('User') private readonly userModel: Model<User>,
+    @InjectModel('User') private userModel: Model<User>,
     @Inject(Cache) private readonly cache: Cache,
     @Inject(UserService) private readonly userService: UserService,
     private readonly jwtService: JwtService,
-  ) { }
+  ) { 
+
+    // this.userModel = .model('User', UserSchema) as Model<User>;
+  }
 
   async validateUser(username: string, password: string): Promise<Partial<User>> {
     this.logger.log(`validating user for username: ${username}`);
@@ -52,6 +56,7 @@ export class AuthService {
           this.logger.error(`Failed to lock user for ${username}`);
         }
       }
+      throw new UnauthorizedException("Invalid credentials");
     }
   }
 
