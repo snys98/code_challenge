@@ -35,19 +35,21 @@ Prerequisites:
 Steps to run the project:
 
 1. Clone the project and open it in vscode
-2. Press `F1` and type `tasks: run task` and select `compose dev dependencies` task, wait for the dependencies to start
-3. Ensure all the dependencies in stack of `dev_env` are running(except for `setup`).
-4. Press `F1` and type `tasks: run task` and select `start dev reverse proxy` task.
-5. Copy and paste the `.\hosts` file content to your hosts file(or use [switchhosts](https://github.com/oldj/SwitchHosts) for better hosts management).
-6. Ping `redis` to ensure the hosts file is configured correctly and the target should your localhost.
-7. Press `F1` and type `tasks: run task` and select `build all` task.
-8. Access the frontend at [https://app.dev.challenge](https://app.dev.challenge) and the backend at [https://api.dev.challenge](https://api.dev.challenge), swagger endpoint is at `/swagger`.
+2. Open file `./.vscode/code_challenge.code-workspace` and press the `Open Workspace` button
+3. Press `F1` and type `tasks: run task` and select `compose dev dependencies` task, wait for the dependencies to start
+4. Ensure all the dependencies in stack of `dev_env` are running(except for `setup`).
+5. Press `F1` and type `tasks: run task` and select `start dev reverse proxy` task.
+6. Copy and paste the `.\hosts` file content to your hosts file(or use [switchhosts](https://github.com/oldj/SwitchHosts) for better hosts management).
+7. Ping `redis` to ensure the hosts file is configured correctly and the target should your localhost.
+8. Press `F1` and type `tasks: run task` and select `build all` task.
+9. Access the frontend at [https://app.dev.challenge](https://app.dev.challenge) and the backend at [https://api.dev.challenge](https://api.dev.challenge), swagger endpoint is at `/swagger`.
 
 ## Development
 
 similar to getting started, after step 2, you can run start scripts in package.json to start dev server.
 
 Recommendations for better dev experience:
+
 - Use [vscode workspace](https://code.visualstudio.com/docs/editor/workspaces) to open this project.
 - Install recommended vscode extensions.
 
