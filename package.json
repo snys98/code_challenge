@@ -17,9 +17,11 @@
     "test": "npm-run-all --parallel test:*",
     "test:api": "cd ./apps/api && npm test",
     "test:app": "cd ./apps/app && npm test",
+    "test:scheduler": "cd ./apps/scheduler && npm test",
     "install": "npm-run-all install:*",
     "install:api": "cd ./apps/api && npm i",
-    "install:app": "cd ./apps/app && npm i"
+    "install:app": "cd ./apps/app && npm i",
+    "install:scheduler": "cd ./apps/scheduler && npm i"
   },
   "dependencies": {
     "is-binary": "^0.1.0"

@@ -23,6 +23,10 @@ services:
       retries: 3  
     networks:
       - dev
+  scheduler:
+    image: challenge/scheduler:latest
+    networks:
+      - dev
 
 networks: 
     dev:

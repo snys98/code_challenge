@@ -66,6 +66,10 @@
       "name": "apps/app",
       "path": "../apps/app"
     },
+    {
+      "name": "apps/scheduler",
+      "path": "../apps/scheduler"
+    },
   ],
   "settings": {
     "jest.disabledWorkspaceFolders": [

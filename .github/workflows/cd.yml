@@ -32,6 +32,7 @@ jobs:
             docker pull ghcr.io/${{ github.repository_owner }}/challenge/app:${{ github.event.inputs.image_tag }}
             docker run -d --name api -p 3000:3000 ghcr.io/${{ github.repository_owner }}/challenge/api:${{ github.event.inputs.image_tag }}
             docker run -d --name app -p 4000:4000 ghcr.io/${{ github.repository_owner }}/challenge/app:${{ github.event.inputs.image_tag }}
+            docker run -d --name scheduler ghcr.io/${{ github.repository_owner }}/challenge/scheduler:${{ github.event.inputs.image_tag }}
 
   deploy_prod:
     runs-on: ubuntu-latest
@@ -52,3 +53,4 @@ jobs:
             docker pull ghcr.io/${{ github.repository_owner }}/challenge/app:${{ github.event.inputs.image_tag }}
             docker run -d --name api -p 3000:3000 ghcr.io/${{ github.repository_owner }}/challenge/api:${{ github.event.inputs.image_tag }}
             docker run -d --name app -p 4000:4000 ghcr.io/${{ github.repository_owner }}/challenge/app:${{ github.event.inputs.image_tag }}
+            docker run -d --name scheduler ghcr.io/${{ github.repository_owner }}/challenge/scheduler:${{ github.event.inputs.image_tag }}
