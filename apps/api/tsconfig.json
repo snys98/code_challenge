@@ -21,4 +21,5 @@
     "esModuleInterop": true,
   },
   "include": ["src/**/*"],
+  "files": ["src/shared/extensions/index.ts"]
 }
