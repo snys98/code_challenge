@@ -45,6 +45,19 @@ Prerequisites:
 > Note: This project will setup a fresh local dev environment with all the dependencies running in docker containers, these dependencies may conflict with your local environment, port reservations: [6379, 27017, 9200, 9300, 8200, 9600, 5044, 50000,, 5601].
 > If you already have some of the dependencies installed, please ensure they are not running before starting the project.
 
+list of endpoints:
+- [kibana](https://kibana.dev.challenge)
+- [elasticsearch](https://elasticsearch.dev.challenge)
+- [redis](https://redis.dev.challenge)
+- [mongodb](https://mongo.dev.challenge)
+- [apm-server](https://apm-server.dev.challenge)
+- [logstash](https://logstash.dev.challenge)
+- [api-health-check](https://api.dev.challenge)
+- [api-swagger](https://api.dev.challenge/swagger)
+  - [api-swagger-json](https://api.dev.challenge/swagger/json)
+  - [api-swagger-yaml](https://api.dev.challenge/swagger/yaml)
+- [app](https://app.dev.challenge)
+
 ## Development
 
 Recommendations for better dev experience:

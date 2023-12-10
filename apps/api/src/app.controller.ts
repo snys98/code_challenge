@@ -38,11 +38,11 @@ export class AppController {
       //   client: this.redis,
       //   type: 'redis',
       // }),
-      () => this.http.pingCheck('apm', 'http://apm-server:8200', {
+      () => this.http.pingCheck('apm', 'http://apm-server.dev.challenge', {
         validateStatus,
         timeout: 1000,
       }),
-      () => this.http.pingCheck('elasticsearch', 'http://elasticsearch:9200', {
+      () => this.http.pingCheck('elasticsearch', 'http://elasticsearch.dev.challenge', {
         validateStatus,
         timeout: 1000,
       }),

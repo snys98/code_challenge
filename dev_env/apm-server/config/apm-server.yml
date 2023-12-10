@@ -2,7 +2,7 @@ apm-server:
   host: "0.0.0.0:8200"
 
 output.elasticsearch:
-  hosts: ["http://elasticsearch:9200"]
+  hosts: ["http://elasticsearch.dev.challenge"]
   username: "elastic"
   password: "${ELASTIC_PASSWORD}"
   
@@ -12,4 +12,4 @@ setup.template.settings:
   _source.enabled: true
 
 setup.kibana:
-  host: "http://kibana:5601"
+  host: "http://kibana.dev.challenge"

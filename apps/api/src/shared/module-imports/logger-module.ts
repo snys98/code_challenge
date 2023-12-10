@@ -48,7 +48,7 @@ export function createLoggerModule(appConfig: AppConfig) {
                 maxResponseSize: 10000000,
                 generateRequestId: () => { new ObjectID(Date.now()).toHexString()},
                 name: appConfig.appName,
-                node: 'http://elasticsearch:9200',
+                node: 'http://elasticsearch.dev.challenge',
                 auth: {
                     username: appConfig.logger.esUsername,
                     password: appConfig.logger.esPassword,

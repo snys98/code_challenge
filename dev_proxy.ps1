@@ -17,6 +17,24 @@ redbird({
         if(host == 'app.dev.challenge'){
           return 'http://127.0.0.1:4000'
         }
+        if(host == 'mongo.dev.challenge'){
+          return 'http://127.0.0.1:27017'
+        }
+        if(host == 'redis.dev.challenge'){
+          return 'http://127.0.0.1:6379'
+        }
+        if(host == 'elasticsearch.dev.challenge'){
+          return 'http://127.0.0.1:9200'
+        }
+        if(host == 'apm-server.dev.challenge'){
+          return 'http://127.0.0.1:8200'
+        }
+        if(host == 'kibana.dev.challenge'){
+          return 'http://127.0.0.1:5601'
+        }
+         if(host == 'logstash.dev.challenge'){
+          return 'http://127.0.0.1:9600'
+        }
       }
     ],
     ssl: {

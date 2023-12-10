@@ -43,6 +43,7 @@ services:
       - elasticsearch
 
   elasticsearch:
+    hostname: elasticsearch.dev.challenge
     build:
       context: elasticsearch/
       args:
@@ -68,6 +69,7 @@ services:
     restart: unless-stopped
 
   logstash:
+    hostname: logstash.dev.challenge
     build:
       context: logstash/
       args:
@@ -90,6 +92,7 @@ services:
     restart: unless-stopped
 
   kibana:
+    hostname: kibana.dev.challenge
     build:
       context: kibana/
       args:
@@ -107,6 +110,7 @@ services:
     restart: unless-stopped
 
   apm-server:
+    hostname: apm-server.dev.challenge
     build:
       context: apm-server/
       args:
@@ -124,6 +128,7 @@ services:
     restart: unless-stopped
 
   redis:
+    hostname: redis.dev.challenge
     image: redis
     ports:
       - "6379:6379"
@@ -131,6 +136,7 @@ services:
       dev:
     restart: unless-stopped
   mongo:
+    hostname: mongo
     image: mongo:5.0.17
     ports:
       - 27017:27017
