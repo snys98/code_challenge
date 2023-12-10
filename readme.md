@@ -2,10 +2,12 @@
 
 Code challenge project.
 
+[![build](https://github.com/snys98/code_challenge/actions/workflows/ci.yml/badge.svg)](https://github.com/snys98/code_challenge/actions/workflows/ci.yml) [![d](https://github.com/snys98/code_challenge/actions/workflows/cd.yml/badge.svg)](https://github.com/snys98/code_challenge/actions/workflows/cd.yml)
+
 ## Tech Stack
 
 - Backend(based on [Nest.js](https://nestjs.com/)):
-
+  
   - ORM: [Mongoose](https://mongoosejs.com/)
   - Database: [MongoDB](https://www.mongodb.com/)
   - Cache: [Redis](https://redis.io/)
@@ -15,16 +17,16 @@ Code challenge project.
   - Logging: [elk](https://www.elastic.co/what-is/elk-stack)
   - Migration: [migrate-mongoose](https://github.com/balmasi/migrate-mongoose)
 - Frontend(very simple and basic, based on [React](https://reactjs.org/)):
-
+  
   - UI: [Ant Design](https://ant.design/)
 - TaskScheduler(Todo): [node-schedule](https://github.com/node-schedule/node-schedule)
 - CI/CD:
-
+  
   - [Docker](https://www.docker.com/)
   - [Docker Compose](https://docs.docker.com/compose/)
   - [Github Actions](https://docs.github.com/en/actions)
-- Misc: 
-
+- Misc:
+  
   - Testing: [Jest](https://jestjs.io/)
 
 ## Getting Started
