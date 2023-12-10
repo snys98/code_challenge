@@ -2,7 +2,7 @@ module.exports = {
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "tsconfig.json",
-    "tsconfigRootDir": "w:\\workspace\\sapia\\code_challenge\\apps\\api",
+    "tsconfigRootDir": ".",
     "sourceType": "module"
   },
   "plugins": [
@@ -17,13 +17,14 @@ module.exports = {
     "jest": true
   },
   "ignorePatterns": [
-    ".eslintrc.js"
+    ".eslintrc.js", "migrate.ts", "migrations/*.ts", 
   ],
   "rules": {
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-unused-vars": 1
+    "@typescript-eslint/no-unused-vars": 1,
+    "undefined": 0
   }
 }

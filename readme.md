@@ -10,7 +10,9 @@ Code challenge project.
   - Cache: [Redis](https://redis.io/)
   - Authentication: Local [JWT](https://jwt.io/)
   - Authorization(Todo): [Casbin](https://casbin.org/) - [RBAC](https://en.wikipedia.org/wiki/Role-based_access_control)
+  - Message Queue(Todo): [rabbitmq](https://docs.nestjs.com/microservices/rabbitmq)
   - Logging: [elk](https://www.elastic.co/what-is/elk-stack)
+  - Migration: [migrate-mongoose](https://github.com/balmasi/migrate-mongoose)
 - Frontend(very simple and basic, based on [React](https://reactjs.org/)):
   - UI: [Ant Design](https://ant.design/)
 - CI/CD:
@@ -18,6 +20,7 @@ Code challenge project.
   - [Docker Compose](https://docs.docker.com/compose/)
   - [Github Actions](https://docs.github.com/en/actions)
 - Misc:
+  - TaskScheduler(Todo): [node-schedule](https://github.com/node-schedule/node-schedule)
   - Testing: [Jest](https://jestjs.io/)
 
 ## Getting Started
@@ -32,7 +35,7 @@ Prerequisites:
 > Note: This project will setup a fresh local dev environment with all the dependencies running in docker containers, these dependencies may conflict with your local environment.
 > If you already have some of the dependencies installed, please ensure they are not running before starting the project.
 
-Steps to run the project:
+Steps to build the project:
 
 1. Clone the project and open it in vscode
 2. Open file `./.vscode/code_challenge.code-workspace` and press the `Open Workspace` button
@@ -43,11 +46,12 @@ Steps to run the project:
 7. Copy and paste the `.\hosts` file content to your hosts file(or use [switchhosts](https://github.com/oldj/SwitchHosts) for better hosts management).
 8. Ping `redis` to ensure the hosts file is configured correctly and the target should your localhost.
 9. Press `F1` and type `tasks: run task` and select `build all` task.
-10. Access the frontend at [https://app.dev.challenge](https://app.dev.challenge) and the backend at [https://api.dev.challenge](https://api.dev.challenge), swagger endpoint is at `/swagger`.
+10. Press `F1` and type `tasks: run task` and select `migrate up` task for generating test data.
+11. Access the frontend at [https://app.dev.challenge](https://app.dev.challenge) and the backend at [https://api.dev.challenge](https://api.dev.challenge), swagger endpoint is at `/swagger`.
 
 ## Development
 
-similar to getting started, after step 2, you can run start scripts in package.json to start dev server.
+similar to getting started, after step 8, you can run start scripts in package.json to start dev server.
 
 Recommendations for better dev experience:
 

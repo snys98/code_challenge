@@ -1,1 +1,1 @@
-docker build -t sapia/api .
+docker build -t challenge/api .

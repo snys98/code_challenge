@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   api:
-    image: sapia/api:latest
+    image: challenge/api:latest
     ports:
       - 3000:3000
     healthcheck:
@@ -13,7 +13,7 @@ services:
     networks: 
       - dev
   app:
-    image: sapia/app:latest
+    image: challenge/app:latest
     ports:
       - 4000:4000
     healthcheck:

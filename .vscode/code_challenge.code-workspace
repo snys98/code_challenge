@@ -1,86 +1,99 @@
 {
-    "tasks": {
-        "version": "2.0.0",
-        "tasks": [
-            {
-                "label": "compose dev dependencies",
-                "command": "pwsh .\\dev_env\\init_dev_env.ps1",
-                "type": "shell",
-                "presentation": {
-                    "reveal": "always"
-                },
-                "group": "none",
-                "runOptions": {
-                    "instanceLimit": 1
-                },
-                "problemMatcher": []
-            },
-            {
-                "label": "start dev reverse proxy",
-                "command": "pwsh .\\dev_proxy.ps1",
-                "type": "shell",
-                "runOptions": {
-                    "instanceLimit": 1
-                },
-                "presentation": {
-                    "reveal": "always"
-                },
-                "group": "none",
-                "problemMatcher": []
-            },
-            {
-                "label": "build all",
-                "command": "pwsh .\\build_all.ps1 && docker-compose up -d --build",
-                "type": "shell",
-                "presentation": {
-                    "reveal": "always"
-                },
-                "group": "build",
-                "problemMatcher": []
-            }
-        ]
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "compose dev dependencies",
+        "command": "pwsh .\\dev_env\\init_dev_env.ps1",
+        "type": "shell",
+        "presentation": {
+          "reveal": "always"
+        },
+        "group": "none",
+        "runOptions": {
+          "instanceLimit": 1
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "start dev reverse proxy",
+        "command": "pwsh .\\dev_proxy.ps1",
+        "type": "shell",
+        "runOptions": {
+          "instanceLimit": 1
+        },
+        "presentation": {
+          "reveal": "always"
+        },
+        "group": "none",
+        "problemMatcher": []
+      },
+      {
+        "label": "build all",
+        "command": "pwsh .\\build_all.ps1 && docker-compose up -d --build",
+        "type": "shell",
+        "presentation": {
+          "reveal": "always"
+        },
+        "group": "build",
+        "problemMatcher": []
+      },
+      {
+        "label": "migrate up",
+        "type": "shell",
+        "command": "npx",
+        "args": [
+          "migrate",
+          "up"
+        ],
+        "options": {
+          "cwd": "${workspaceFolder:apps/api}"
+        },
+        "problemMatcher": []
+      }
+    ]
+  },
+  "folders": [
+    {
+      "name": "ROOT",
+      "path": "../",
     },
-    "folders": [
-        {
-            "name": "ROOT",
-            "path": "../",
-        },
-        {
-            "name": "apps/api",
-            "path": "../apps/api"
-        },
-        {
-            "name": "apps/app",
-            "path": "../apps/app"
-        },
+    {
+      "name": "apps/api",
+      "path": "../apps/api"
+    },
+    {
+      "name": "apps/app",
+      "path": "../apps/app"
+    },
+  ],
+  "settings": {
+    "jest.disabledWorkspaceFolders": [
+      "ROOT",
     ],
-    "settings": {
-        "jest.disabledWorkspaceFolders": [
-            "ROOT",
-        ],
-        "workbench.colorCustomizations": {
-            "activityBar.background": "#f83184",
-            "titleBar.activeBackground": "#f83184",
-            "titleBar.activeForeground": "#FFFBFD"
-        },
-        "cSpell.enableFiletypes": [
-            "*"
-        ],
-        "vsicons.presets.nestjs": true,
-        "restoreTerminals.runOnStartup": true,
-        "restoreTerminals.keepExistingTerminalsOpen": true,
+    "workbench.colorCustomizations": {
+      "activityBar.background": "#f83184",
+      "titleBar.activeBackground": "#f83184",
+      "titleBar.activeForeground": "#FFFBFD"
     },
-    "extensions": {
-        "recommendations": [
-            "orta.vscode-jest",
-            "nguyenngoclong.terminal-keeper",
-            "streetsidesoftware.code-spell-checker",
-            "mikestead.dotenv",
-            "me-dutour-mathieu.vscode-github-actions",
-            "fi3ework.vscode-antd-rush",
-            "aaron-bond.better-comments",
-            "ms-azuretools.vscode-docker",
-            "github.vscode-github-actions"
-        ],
-    }
+    "cSpell.enableFiletypes": [
+      "*"
+    ],
+    "vsicons.presets.nestjs": true,
+    "restoreTerminals.runOnStartup": true,
+    "restoreTerminals.keepExistingTerminalsOpen": true,
+  },
+  "extensions": {
+    "recommendations": [
+      "orta.vscode-jest",
+      "nguyenngoclong.terminal-keeper",
+      "streetsidesoftware.code-spell-checker",
+      "mikestead.dotenv",
+      "me-dutour-mathieu.vscode-github-actions",
+      "fi3ework.vscode-antd-rush",
+      "aaron-bond.better-comments",
+      "ms-azuretools.vscode-docker",
+      "github.vscode-github-actions"
+    ],
+  }
 }

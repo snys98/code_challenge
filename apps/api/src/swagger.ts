@@ -1,8 +1,8 @@
 import { DocumentBuilder } from "@nestjs/swagger";
 
 const SwaggerOptions = new DocumentBuilder()
-    .setTitle('sapia API')
-    .setDescription('sapia API Description')
+    .setTitle('challenge API')
+    .setDescription('challenge API Description')
     .setVersion('1.0')
     .build();
 

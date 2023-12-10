@@ -18,6 +18,7 @@ export class UserController {
     @UseGuards(AuthGuard('local'))
     @Get()
     async getUsers(@CurrentUser() user: UserProfile) {
+        this.logger.log(user);
         const users = await this.userService.getUsers();
         return users.map(user => user.toObject());
     }
