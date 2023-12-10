@@ -35,43 +35,42 @@ Prerequisites:
 
 - [Docker](https://www.docker.com/)
 - [pwsh@^7](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.4)
-- [Administartor rights](https://www.howtogeek.com/194041/how-to-open-the-command-prompt-as-administrator-in-windows-10/) for local dev cert generation
-- [Node.js@^18.12](https://nodejs.org/en/)
 
-> Note: This project will setup a fresh local dev environment with all the dependencies running in docker containers, these dependencies may conflict with your local environment.
+run script in repo root folder with pwsh:
+
+```pwsh
+.\start_containers.ps1
+```
+
+> Note: This project will setup a fresh local dev environment with all the dependencies running in docker containers, these dependencies may conflict with your local environment, port reservations: [6379, 27017, 9200, 9300, 8200, 9600, 5044, 50000,, 5601].
 > If you already have some of the dependencies installed, please ensure they are not running before starting the project.
 
-Steps to build the project:
+## Development
+
+Recommendations for better dev experience:
+
+- Use [vscode workspace](https://code.visualstudio.com/docs/editor/workspaces) to open this project.
+- Install recommended vscode extensions.
+
+Steps to run the project:
 
 1. Clone the project and open it in vscode
 2. Open file `./.vscode/code_challenge.code-workspace` and press the `Open Workspace` button
 3. Press `F1` and type `tasks: run task` and select `compose dev dependencies` task, wait for the dependencies to start(you might need to restart vscode after this step).
 4. Ensure all the dependencies in stack of `dev_env` are running(except for `setup`), status should be like this.
-
    ![1702222429452](images/readme/1702222429452.png)
 5. Press `F1` and type `tasks: run task` and select `npm`, then select `npm install` in `ROOT` folder.
 6. Press `F1` and type `tasks: run task` and select `start dev reverse proxy` task.
 7. Copy and paste the `.\hosts` file content to your hosts file(or use [switchhosts](https://github.com/oldj/SwitchHosts) for better hosts management).
 8. Ping `redis` to ensure the hosts file is configured correctly and the target should your localhost.
 9. Press `F1` and type `tasks: run task` and select `build all` task, new stack of `code_challenge` should be running, and status should be like this.
-
    ![1702223602760](images/readme/1702223602760.png)
 10. Press `F1` and type `tasks: run task` and select `migrate up` task for generating test data.
 11. Access the frontend at [https://app.dev.challenge](https://app.dev.challenge) and the backend at [https://api.dev.challenge](https://api.dev.challenge), swagger endpoint is at `/swagger`.
 
 > see `.\dev_env\docker-compose` file for docker container dependencies
->
 > see `.\dev_env\.env` file for elasticsearch and kibana passwords
 > see `.\apps\api\.env.dev` file for api environment variables
-
-## Development
-
-similar to getting started, after step 8, you can run start scripts in package.json to start dev server.
-
-Recommendations for better dev experience:
-
-- Use [vscode workspace](https://code.visualstudio.com/docs/editor/workspaces) to open this project.
-- Install recommended vscode extensions.
 
 ## Testing
 

@@ -23,7 +23,7 @@ const Users = () => {
     ];
 
     useEffect(() => {
-        axios.get('https://api.dev.challenge/users', {
+        axios.get('//localhost:3000/users', {
             headers: {
                 Authorization: `Bearer ${accessToken}`,
             }
