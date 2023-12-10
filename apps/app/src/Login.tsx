@@ -15,7 +15,7 @@ const Login = () => {
         setLoading(true);
         try {
             const values = { username, password: md5(password) };
-            const response = await axios.post('//localhost:3000/auth/login', values);
+            const response = await axios.post('http://localhost:3000/auth/login', values);
             const token = response.data.access_token;
             if (token) {
                 message.success('Login success.');

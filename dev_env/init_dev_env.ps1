@@ -75,8 +75,9 @@ if ($null -eq $cert) {
     Export-PfxCertificate -Cert "Cert:\LocalMachine\My\$($cert.Thumbprint)" -FilePath "./.dev_cert/dev.challenge.pfx" -Password $pwd
     openssl pkcs12 -in "./.dev_cert/dev.challenge.pfx" -nodes -out ./.dev_cert/dev.challenge.pem -passin pass:dev.challenge
     Install-CCertificate -Path "./.dev_cert/dev.challenge.pfx" -StoreLocation LocalMachine -StoreName Root -Password $pwd
-    docker-compose up setup -d
-    docker-compose up -d
 }
+
+docker-compose up setup -d
+docker-compose up -d
 
 #endregion

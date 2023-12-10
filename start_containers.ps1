@@ -1,5 +1,4 @@
-docker-compose -f .\dev_env\docker-compose.yml up setup
-docker-compose -f .\dev_env\docker-compose.yml up -d
+pwsh .\dev_env\init_dev_env.ps1
 if (!(Test-Path -Path .\apps\api\node_modules)) {
     npm --prefix .\apps\api install
 }else {
@@ -8,3 +7,4 @@ if (!(Test-Path -Path .\apps\api\node_modules)) {
 
 npm --prefix .\apps\api run migrate:up
 docker-compose up -d
+pwsh .\dev_proxy.ps1

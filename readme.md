@@ -36,11 +36,11 @@ Prerequisites:
 - [Docker](https://www.docker.com/)
 - [pwsh@^7](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.4)
 
-run script in repo root folder with pwsh:
-
-```pwsh
-.\start_containers.ps1
-```
+1. run script in repo root folder using pwsh with administrator permission, and follow instructions
+  ```pwsh
+  .\start_containers.ps1
+  ```
+2. open browser and access the frontend at [https://app.dev.challenge](https://app.dev.challenge) and the backend at [https://api.dev.challenge](https://api.dev.challenge), swagger endpoint is at `/swagger`.
 
 > Note: This project will setup a fresh local dev environment with all the dependencies running in docker containers, these dependencies may conflict with your local environment, port reservations: [6379, 27017, 9200, 9300, 8200, 9600, 5044, 50000,, 5601].
 > If you already have some of the dependencies installed, please ensure they are not running before starting the project.
