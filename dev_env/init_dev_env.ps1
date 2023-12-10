@@ -61,8 +61,9 @@ if (-not (Check-Command docker)) {
         exit
     }
     choco install docker-desktop -y
-    echo "docker installed, starting docker service";
-    docker
+    docker version
+    Read-Host -Prompt "docker installed, please start docker manually then fully restart current process(vscode or powershell) and run this script again, press any key to exit ";
+    exit
 }
 
 #region cert

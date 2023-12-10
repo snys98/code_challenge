@@ -4,7 +4,7 @@
         "tasks": [
             {
                 "label": "compose dev dependencies",
-                "command": "npm i && pwsh .\\dev_env\\init_dev_env.ps1",
+                "command": "pwsh .\\dev_env\\init_dev_env.ps1",
                 "type": "shell",
                 "presentation": {
                     "reveal": "always"

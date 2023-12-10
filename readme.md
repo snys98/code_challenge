@@ -36,13 +36,14 @@ Steps to run the project:
 
 1. Clone the project and open it in vscode
 2. Open file `./.vscode/code_challenge.code-workspace` and press the `Open Workspace` button
-3. Press `F1` and type `tasks: run task` and select `compose dev dependencies` task, wait for the dependencies to start
+3. Press `F1` and type `tasks: run task` and select `compose dev dependencies` task, wait for the dependencies to start(you might need to restart vscode after this step).
 4. Ensure all the dependencies in stack of `dev_env` are running(except for `setup`).
-5. Press `F1` and type `tasks: run task` and select `start dev reverse proxy` task.
-6. Copy and paste the `.\hosts` file content to your hosts file(or use [switchhosts](https://github.com/oldj/SwitchHosts) for better hosts management).
-7. Ping `redis` to ensure the hosts file is configured correctly and the target should your localhost.
-8. Press `F1` and type `tasks: run task` and select `build all` task.
-9. Access the frontend at [https://app.dev.challenge](https://app.dev.challenge) and the backend at [https://api.dev.challenge](https://api.dev.challenge), swagger endpoint is at `/swagger`.
+5. Press `F1` and type `tasks: run task` and select `npm`, then select `npm install` in `ROOT` folder.
+6. Press `F1` and type `tasks: run task` and select `start dev reverse proxy` task.
+7. Copy and paste the `.\hosts` file content to your hosts file(or use [switchhosts](https://github.com/oldj/SwitchHosts) for better hosts management).
+8. Ping `redis` to ensure the hosts file is configured correctly and the target should your localhost.
+9. Press `F1` and type `tasks: run task` and select `build all` task.
+10. Access the frontend at [https://app.dev.challenge](https://app.dev.challenge) and the backend at [https://api.dev.challenge](https://api.dev.challenge), swagger endpoint is at `/swagger`.
 
 ## Development
 
