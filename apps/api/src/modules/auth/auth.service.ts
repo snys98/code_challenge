@@ -10,9 +10,8 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 
-import { User, UserSchema } from '../user/user.entity';
+import { User } from '../user/user.entity';
 import { UserService } from '../user/user.service';
-import * as mongoose from 'mongoose';
 
 export const MaxFailedLoginAttempts = 3;
 @Injectable()
