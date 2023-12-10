@@ -17,4 +17,4 @@ COPY . .
 RUN npm run build
 
 # 运行应用程序  
-CMD [ "node", ".\dist\\main.js" ]  
+CMD [ "node", "./dist/main.js" ]  

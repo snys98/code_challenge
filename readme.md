@@ -53,15 +53,16 @@ Steps to build the project:
 6. Press `F1` and type `tasks: run task` and select `start dev reverse proxy` task.
 7. Copy and paste the `.\hosts` file content to your hosts file(or use [switchhosts](https://github.com/oldj/SwitchHosts) for better hosts management).
 8. Ping `redis` to ensure the hosts file is configured correctly and the target should your localhost.
-9. Press `F1` and type `tasks: run task` and select `build all` task.
+9. Press `F1` and type `tasks: run task` and select `build all` task, new stack of `code_challenge` should be running, and status should be like this.
+
+   ![1702223602760](images/readme/1702223602760.png)
 10. Press `F1` and type `tasks: run task` and select `migrate up` task for generating test data.
 11. Access the frontend at [https://app.dev.challenge](https://app.dev.challenge) and the backend at [https://api.dev.challenge](https://api.dev.challenge), swagger endpoint is at `/swagger`.
 
-
 > see `.\dev_env\docker-compose` file for docker container dependencies
+>
 > see `.\dev_env\.env` file for elasticsearch and kibana passwords
 > see `.\apps\api\.env.dev` file for api environment variables
-
 
 ## Development
 
