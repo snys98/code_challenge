@@ -1,3 +1,7 @@
+import * as dotenv from 'dotenv';
+const env = process.env.NODE_ENV || 'dev';
+console.log(`Running in ${env} mode`);
+dotenv.config({ path: `.env.${env}` });
 import mongoose from "mongoose";
 import { AppConfig } from "./src/app.config";
 

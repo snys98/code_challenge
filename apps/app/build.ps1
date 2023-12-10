@@ -1,1 +1,1 @@
-docker build -t challenge/app .
+docker build -t ghcr.io/snys98/challenge/app .

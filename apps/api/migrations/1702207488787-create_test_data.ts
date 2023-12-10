@@ -2,7 +2,6 @@
 import mongoose from 'mongoose'
 import { UserSchema } from '../src/modules/user/user.entity'
 export async function up(): Promise<void> {
-  console.log(mongoose.connection);
   const userModel = mongoose.model('User', UserSchema)
   // Write migration here
   await userModel.create([{

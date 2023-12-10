@@ -27,33 +27,32 @@ export class AuthService {
   async validateUser(username: string, password: string): Promise<Partial<User>> {
     this.logger.log(`validating user for username: ${username}`);
     const user = await this.userModel.findOne({ username: username }).exec();
-    if (user) {
-      const failedAttemptsKey = `Auth:FailedAttempts:${user.id}`;
-      this.logger.log(`Failed login attempts for ${username}: ${failedAttemptsKey}`);
-      if (user.locked) {
-        throw new UnauthorizedException("User account is locked.");
-      }
-      if (user.password === password) {
-        await this.cache.del(failedAttemptsKey);
-        const { password, ...result } = user.toObject();
-        return result;
-      }
-      else {
-        // If the password is incorrect, increase the failed login attempts.  
-        let failedAttempts = await this.cache.get<number>(failedAttemptsKey) || 0;
-        failedAttempts++;
-        await this.cache.set(failedAttemptsKey, failedAttempts, 1000 * 60 * 5); // Set the cache to expire after 5 minutes.  
-        this.logger.log(`Failed login attempts set for ${username}: ${failedAttempts}`);
-        if (failedAttempts >= MaxFailedLoginAttempts) {
-          try {
-            await this.userService.lockUser(user.id)
-          } catch (error) {
-            this.logger.error(`Failed to lock user for ${username}`);
-          }
+    if (!user) {
+      throw new UnauthorizedException("Invalid credentials");
+    }
+    const failedAttemptsKey = `Auth:FailedAttempts:${user.id}`;
+    if (user.locked) {
+      throw new UnauthorizedException("User account is locked.");
+    }
+    if (user.password === password) {
+      await this.cache.del(failedAttemptsKey);
+      const { password, ...result } = user.toObject();
+      return result;
+    }
+    else {
+      // If the password is incorrect, increase the failed login attempts.  
+      let failedAttempts = await this.cache.get<number>(failedAttemptsKey) || 0;
+      failedAttempts++;
+      await this.cache.set(failedAttemptsKey, failedAttempts, 1000 * 60 * 5); // Set the cache to expire after 5 minutes.  
+      this.logger.log(`Failed login attempts set for ${username}: ${failedAttempts}`);
+      if (failedAttempts >= MaxFailedLoginAttempts) {
+        try {
+          await this.userService.lockUser(user.id)
+        } catch (error) {
+          this.logger.error(`Failed to lock user for ${username}`);
         }
       }
     }
-    throw new UnauthorizedException();
   }
 
   async signIn(user: Partial<User>) {

@@ -1,5 +1,9 @@
 import './shared/extensions';
 import * as dotenv from 'dotenv';
+const env = process.env.NODE_ENV || 'dev';
+console.log(`Running in ${env} mode`);
+dotenv.config({ path: `.env.${env}` });
+
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 
 import { NestFactory } from '@nestjs/core';
@@ -9,8 +13,7 @@ import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './shared/filters/http-exception.filter';
 import SwaggerOptions from './swagger';
 async function bootstrap() {
-  const env = process.env.NODE_ENV || 'dev';
-  dotenv.config({ path: `.env.${env}` });
+
   const app = await NestFactory.create(AppModule, { bufferLogs: true });
   const swaggerDoc = SwaggerModule.createDocument(app, SwaggerOptions);
   // setup swagger
