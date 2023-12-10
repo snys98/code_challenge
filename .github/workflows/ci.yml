@@ -48,11 +48,6 @@ jobs:
       - name: Test all packages
         run: npm i &&npm test
 
-      - name: Build all Docker images
-        if: success()
-        shell: pwsh
-        run: ./build_all.ps1
-
       - name: Set up Docker Buildx
         if: success()
         uses: docker/setup-buildx-action@v3
