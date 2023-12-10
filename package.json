@@ -15,13 +15,13 @@
   },
   "scripts": {
     "test": "npm-run-all --parallel test:*",
-    "test:api": "npm --prefix .\\apps\\api test",
-    "test:app": "npm --prefix .\\apps\\app test",
-    "test:scheduler": "npm --prefix .\\apps\\scheduler test",
+    "test:api": "npm --prefix ./apps/api test",
+    "test:app": "npm --prefix ./apps/app test",
+    "test:scheduler": "npm --prefix ./apps/scheduler test",
     "install": "npm-run-all install:*",
-    "install:api": "npm --prefix .\\apps\\api i",
-    "install:app": "npm --prefix .\\apps\\app i",
-    "install:scheduler": "npm --prefix .\\apps\\scheduler i"
+    "install:api": "npm --prefix ./apps/api i",
+    "install:app": "npm --prefix ./apps/app i",
+    "install:scheduler": "npm --prefix ./apps/scheduler i"
   },
   "dependencies": {
     "is-binary": "^0.1.0"
