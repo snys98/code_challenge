@@ -2,19 +2,15 @@ name: Docker Image CI
 
 on:
   push:
-    branches: ["develop"]
+    branches: ["dev"]
     tags: ["release_*"]
   pull_request:
-    branches: ["develop"]
+    branches: ["dev"]
   workflow_dispatch:
     inputs:
-      ref_name:
-        description: "ref to build(branch or tag)"
+      ref:
+        description: "ref to build(refs/tags/xxx for tag or refs/heads/xxx for branch)"
         required: true
-      clean_ghcr:
-        description: "whether to clean ghcr or not"
-        required: false
-        default: ""
 
 jobs:
   build:
@@ -26,17 +22,21 @@ jobs:
         run: |
           echo "start extract_image_tag"
           echo "github.event_name=${{ github.event_name }}"
-          image_tag=""
+          ref=""
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then  
-            echo "match workflow_dispatch with ref_name=${{ github.event.inputs.ref_name }}"
-            image_tag="${{ github.event.inputs.ref_name }}_$(date +'%Y%m%d%H%M%S')"
-          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == refs/tags/release_* ]]; then  
-            echo "match ${GITHUB_REF}"
+            echo "match workflow_dispatch with ref=${{ github.event.inputs.ref }}"
+            ref="${{ github.event.inputs.ref }}"
+          else
+            echo "match ${{ github.event_name }} ${GITHUB_REF}"
+            ref="${GITHUB_REF}"
+          fi
+          echo "ref=$ref"
+          image_tag=""
+          if [[ $ref == refs/tags/* ]]; then
             image_tag="${GITHUB_REF/refs\/tags\/}"
-          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/develop" ]]; then  
-            echo "match ${GITHUB_REF}"
-            image_tag="dev_$(date +'%Y%m%d%H%M%S')"
-          fi  
+          elif [[ $ref == refs/heads/* ]]; then  
+            image_tag="${GITHUB_REF/refs\/heads\/}_$(date +'%Y%m%d%H%M%S')"
+          fi
           echo "image_tag=$image_tag"
           echo "image_tag=$image_tag" >> "$GITHUB_OUTPUT"
           if [[ $image_tag == release_* ]]; then  
@@ -71,7 +71,9 @@ jobs:
         with:
           context: ./apps/api
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/sapia/api:${{ steps.extract_image_tag.outputs.image_tag }},${{ steps.extract_image_tag.outputs.is_release == 'true' && 'ghcr.io/${{ github.repository_owner }}/sapia/api:latest'  }}
+          tags: |
+            sapia/api:${{ steps.extract_image_tag.outputs.image_tag }}
+            ${{ steps.extract_image_tag.outputs.is_release == 'true' && 'sapia/api:latest' || '' }}
 
       - name: Build and push Docker image for APP
         if: success()
@@ -79,4 +81,14 @@ jobs:
         with:
           context: ./apps/app
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/sapia/app:${{ steps.extract_image_tag.outputs.image_tag}},${{ steps.extract_image_tag.outputs.is_release == 'true' && 'ghcr.io/${{ github.repository_owner }}/sapia/app:latest' || '' }}
+          tags: |
+            sapia/app:${{ steps.extract_image_tag.outputs.image_tag}}
+            ${{ steps.extract_image_tag.outputs.is_release == 'true' && 'sapia/app:latest' || '' }}
+
+      - name: Trigger dev deployment
+        if: success() && github.ref == 'refs/heads/dev'
+        run: |
+          curl -XPOST -u "USERNAME:${{ secrets.GITHUB_TOKEN }}" \  
+          -H "Accept: application/vnd.github.v3+json" \  
+          https://api.github.com/repos/${{ github.repository_owner }}/${{ github.repository }}/actions/workflows/78856595/dispatches \  
+          --data '{"ref":"dev", "inputs":{"environment":"dev", "image_tag":"${{ steps.extract_image_tag.outputs.image_tag }}"}}'}}'

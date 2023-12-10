@@ -1,74 +1,54 @@
 name: Docker Image CD
 
 on:
-  workflow_run:  
-    workflows: ["Docker Image CI"]  
-    types:  
-      - completed  
   workflow_dispatch:
     inputs:
-      build_name:
-        description: 'build to deploy'
+      environment:
+        description: "environment to deploy"
         required: true
-        default: 'latest'
+        default: "dev"
+      image_tag:
+        description: "build to deploy"
+        required: true
+        default: "latest"
 
 jobs:
-  extract_build_name:
-    runs-on: ubuntu-latest
-    if: github.event.inputs.build_name
-    outputs:
-      build_name: ${{ steps.extract_build_name.outputs.build_name }}
-    steps:
-    - name: Extract build name
-      id: extract_build_name
-      run: |
-        build_name=""  
-        if [[ ${{ github.event.inputs.build_name }} ]]; then
-          build_name=${{ github.event.inputs.build_name }}
-        elif [[ "${{  github.event.workflow_run.head_branch }}" == "refs/tags/release_"* ]]; then  
-          build_name=${${{  github.event.workflow_run.head_branch }}/refs\/tags\/}
-        fi
-        echo "build_name=$build_name"
-        echo "build_name=$build_name" >> $GITHUB_OUTPUT
-
   deploy_dev:
-    needs: extract_build_name
     runs-on: ubuntu-latest
-    if: needs.extract_build_name.outputs.build_name
+    if: github.event.inputs.image_tag && github.event.inputs.environment =='dev'
     environment: dev
     steps:
-    - run: |
-        echo "deploy build:${{needs.extract_build_name.outputs.build_name}} to dev environment"
-    - name: Deploy to Dev
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host:  ${{ vars.SERVER_HOST }}
-        username: ${{ secrets.SERVER_USERNAME }}
-        key: ${{ secrets.SERVER_SSH_KEY }}
-        script: |
-          docker login ghcr.io -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
-          docker pull ghcr.io/${{ github.repository_owner }}/sapia/api:${{ github.event.inputs.build_name }}
-          docker pull ghcr.io/${{ github.repository_owner }}/sapia/app:${{ github.event.inputs.build_name }}
-          docker run -d --name api -p 3000:3000 ghcr.io/${{ github.repository_owner }}/sapia/api:${{ github.event.inputs.build_name }}
-          docker run -d --name app -p 4000:4000 ghcr.io/${{ github.repository_owner }}/sapia/app:${{ github.event.inputs.build_name }}
+      - run: |
+          echo "deploy build:${{github.event.inputs.image_tag}} to dev environment"
+      - name: Deploy to Dev
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ vars.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            docker login ghcr.io -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
+            docker pull ghcr.io/${{ github.repository_owner }}/sapia/api:${{ github.event.inputs.image_tag }}
+            docker pull ghcr.io/${{ github.repository_owner }}/sapia/app:${{ github.event.inputs.image_tag }}
+            docker run -d --name api -p 3000:3000 ghcr.io/${{ github.repository_owner }}/sapia/api:${{ github.event.inputs.image_tag }}
+            docker run -d --name app -p 4000:4000 ghcr.io/${{ github.repository_owner }}/sapia/app:${{ github.event.inputs.image_tag }}
 
   deploy_prod:
-    needs: extract_build_name
     runs-on: ubuntu-latest
-    if: github.job.extract_build_name.outputs.build_name && startsWith(github.job.extract_build_name.outputs.build_name, 'release')
+    if: github.event.inputs.image_tag && github.event.inputs.environment =='prod' && startsWith(github.event.inputs.image_tag,'release')
     environment: prod
     steps:
-    - run: |
-        echo "deploy build:${{needs.extract_build_name.outputs.build_name}} to prod environment"
-    - name: Deploy to Prod
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host:  ${{ vars.SERVER_HOST }}
-        username: ${{ secrets.SERVER_USERNAME }}
-        key: ${{ secrets.SERVER_SSH_KEY }}
-        script: |
-          docker login ghcr.io -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
-          docker pull ghcr.io/${{ github.repository_owner }}/sapia/api:${{ github.event.inputs.build_name }}
-          docker pull ghcr.io/${{ github.repository_owner }}/sapia/app:${{ github.event.inputs.build_name }}
-          docker run -d --name api -p 3000:3000 ghcr.io/${{ github.repository_owner }}/sapia/api:${{ github.event.inputs.build_name }}
-          docker run -d --name app -p 4000:4000 ghcr.io/${{ github.repository_owner }}/sapia/app:${{ github.event.inputs.build_name }}
+      - run: |
+          echo "deploy build:${{github.event.inputs.image_tag}} to prod environment"
+      - name: Deploy to Prod
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ vars.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            docker login ghcr.io -u ${{ github.repository_owner }} -p ${{ secrets.GITHUB_TOKEN }}
+            docker pull ghcr.io/${{ github.repository_owner }}/sapia/api:${{ github.event.inputs.image_tag }}
+            docker pull ghcr.io/${{ github.repository_owner }}/sapia/app:${{ github.event.inputs.image_tag }}
+            docker run -d --name api -p 3000:3000 ghcr.io/${{ github.repository_owner }}/sapia/api:${{ github.event.inputs.image_tag }}
+            docker run -d --name app -p 4000:4000 ghcr.io/${{ github.repository_owner }}/sapia/app:${{ github.event.inputs.image_tag }}
