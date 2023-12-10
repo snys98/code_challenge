@@ -39,6 +39,16 @@
         "problemMatcher": []
       },
       {
+        "label": "test all",
+        "command": "npm run test",
+        "type": "shell",
+        "presentation": {
+          "reveal": "always"
+        },
+        "group": "test",
+        "problemMatcher": []
+      },
+      {
         "label": "migrate up",
         "type": "shell",
         "command": "npx",

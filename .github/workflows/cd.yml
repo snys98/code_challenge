@@ -23,7 +23,7 @@ jobs:
       - name: Deploy to Dev
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ vars.SERVER_HOST }}
+          host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
@@ -44,7 +44,7 @@ jobs:
       - name: Deploy to Prod
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ vars.SERVER_HOST }}
+          host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
