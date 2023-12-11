@@ -36,16 +36,20 @@ Prerequisites:
 - [Docker](https://www.docker.com/)
 - [pwsh@^7](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.4)
 
-1. run script in repo root folder using pwsh with administrator permission, and follow instructions
-  ```pwsh
-  .\start_containers.ps1
-  ```
+1. Copy and paste the `.\hosts` file content to your hosts file(or use [switchhosts](https://github.com/oldj/SwitchHosts) for better hosts management).
+2. run script in repo root folder using pwsh with administrator permission, and follow instructions
+
+```pwsh
+.\start_containers.ps1
+```
+
 2. open browser and access the frontend at [https://app.dev.challenge](https://app.dev.challenge) and the backend at [https://api.dev.challenge](https://api.dev.challenge), swagger endpoint is at `/swagger`.
 
 > Note: This project will setup a fresh local dev environment with all the dependencies running in docker containers, these dependencies may conflict with your local environment, port reservations: [6379, 27017, 9200, 9300, 8200, 9600, 5044, 50000,, 5601].
 > If you already have some of the dependencies installed, please ensure they are not running before starting the project.
 
 list of endpoints:
+
 - [kibana](https://kibana.dev.challenge)
 - [elasticsearch](https://elasticsearch.dev.challenge)
 - [redis](https://redis.dev.challenge)
@@ -67,14 +71,14 @@ Recommendations for better dev experience:
 
 Steps to run the project:
 
-1. Clone the project and open it in vscode
-2. Open file `./.vscode/code_challenge.code-workspace` and press the `Open Workspace` button
-3. Press `F1` and type `tasks: run task` and select `compose dev dependencies` task, wait for the dependencies to start(you might need to restart vscode after this step).
-4. Ensure all the dependencies in stack of `dev_env` are running(except for `setup`), status should be like this.
+1. Copy and paste the `.\hosts` file content to your hosts file(or use [switchhosts](https://github.com/oldj/SwitchHosts) for better hosts management).Clone the project and
+2. Open prject with vscode
+3. Open file `./.vscode/code_challenge.code-workspace` and press the `Open Workspace` button
+4. Press `F1` and type `tasks: run task` and select `compose dev dependencies` task, wait for the dependencies to start(you might need to restart vscode after this step).
+5. Ensure all the dependencies in stack of `dev_env` are running(except for `setup`), status should be like this.
    ![1702222429452](images/readme/1702222429452.png)
-5. Press `F1` and type `tasks: run task` and select `npm`, then select `npm install` in `ROOT` folder.
-6. Press `F1` and type `tasks: run task` and select `start dev reverse proxy` task.
-7. Copy and paste the `.\hosts` file content to your hosts file(or use [switchhosts](https://github.com/oldj/SwitchHosts) for better hosts management).
+6. Press `F1` and type `tasks: run task` and select `npm`, then select `npm install` in `ROOT` folder.
+7. Press `F1` and type `tasks: run task` and select `start dev reverse proxy` task.
 8. Ping `redis` to ensure the hosts file is configured correctly and the target should your localhost.
 9. Press `F1` and type `tasks: run task` and select `build all` task, new stack of `code_challenge` should be running, and status should be like this.
    ![1702223602760](images/readme/1702223602760.png)
