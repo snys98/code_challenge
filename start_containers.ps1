@@ -6,5 +6,5 @@ if (!(Test-Path -Path .\apps\api\node_modules)) {
 }
 
 npm --prefix .\apps\api run migrate:up
-docker-compose up -d
+docker-compose up -d --build
 pwsh .\dev_proxy.ps1
