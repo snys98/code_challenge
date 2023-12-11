@@ -7,7 +7,7 @@ export function createMongooseModule(config: AppConfig) {
   return MongooseModule.forRoot(config.mongoose.mongoUri, {
     replicaSet: "rs0",
     autoCreate: true,
-    readPreference: "primary",
+    readPreference: "primaryPreferred",
     appName: config.appName,
   });
 }

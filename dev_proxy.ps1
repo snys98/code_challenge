@@ -12,28 +12,28 @@ redbird({
     resolvers:[
       function(host, url, req) {
         if(host == 'api.dev.challenge'){
-          return 'http://127.0.0.1:3000'
+          return 'http://api.dev.challenge:3000'
         }
         if(host == 'app.dev.challenge'){
-          return 'http://127.0.0.1:4000'
+          return 'http://app.dev.challenge:4000'
         }
         if(host == 'mongo.dev.challenge'){
-          return 'http://127.0.0.1:27017'
+          return 'http://mongo.dev.challenge:27017'
         }
         if(host == 'redis.dev.challenge'){
-          return 'http://127.0.0.1:6379'
+          return 'http://redis.dev.challenge:6379'
         }
         if(host == 'elasticsearch.dev.challenge'){
-          return 'http://127.0.0.1:9200'
+          return 'http://elasticsearch.dev.challenge:9200'
         }
         if(host == 'apm-server.dev.challenge'){
-          return 'http://127.0.0.1:8200'
+          return 'http://apm-server.dev.challenge:8200'
         }
         if(host == 'kibana.dev.challenge'){
-          return 'http://127.0.0.1:5601'
+          return 'http://kibana.dev.challenge:5601'
         }
          if(host == 'logstash.dev.challenge'){
-          return 'http://127.0.0.1:9600'
+          return 'http://logstash.dev.challenge:9600'
         }
       }
     ],

@@ -41,7 +41,7 @@ export class AppController {
       //   validateStatus,
       //   timeout: 1000,
       // }),
-      // () => this.http.pingCheck('elasticsearch', 'http://localhost:9200', {
+      // () => this.http.pingCheck('elasticsearch', 'http://elasticsearch.dev.challenge', {
       //   validateStatus,
       //   timeout: 1000,
       // }),

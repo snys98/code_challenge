@@ -16,7 +16,7 @@
         "problemMatcher": []
       },
       {
-        "label": "start dev reverse proxy",
+        "label": "dev reverse proxy",
         "command": "pwsh .\\dev_proxy.ps1",
         "type": "shell",
         "runOptions": {
@@ -29,7 +29,17 @@
         "problemMatcher": []
       },
       {
-        "label": "build all",
+        "label": "full dev setup",
+        "command": "pwsh .\\start_containers.ps1",
+        "type": "shell",
+        "presentation": {
+          "reveal": "always"
+        },
+        "group": "none",
+        "problemMatcher": []
+      },
+      {
+        "label": "build and compose all",
         "command": "pwsh .\\build_all.ps1 && docker-compose up -d --build",
         "type": "shell",
         "presentation": {
