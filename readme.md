@@ -50,12 +50,12 @@ Prerequisites:
 
 list of endpoints:
 
-- [kibana](https://kibana.dev.challenge)
-- [elasticsearch](https://elasticsearch.dev.challenge)
-- [redis](https://redis.dev.challenge)
-- [mongodb](https://mongo.dev.challenge)
-- [apm-server](https://apm-server.dev.challenge)
-- [logstash](https://logstash.dev.challenge)
+- [kibana](http://kibana.dev.challenge:5601)
+- [elasticsearch](http://elasticsearch.dev.challenge:9200)
+- [redis](http://redis.dev.challenge:6379)
+- [mongodb](http://mongo.dev.challenge:27017)
+- [apm-server](http://apm-server.dev.challenge:8200)
+- [logstash](http://logstash.dev.challenge:9600)
 - [api-health-check](https://api.dev.challenge)
 - [api-swagger](https://api.dev.challenge/swagger)
   - [api-swagger-json](https://api.dev.challenge/swagger/json)

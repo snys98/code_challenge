@@ -10,8 +10,6 @@ RUN npm run build
 FROM node:18.12.1-alpine
 WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/dist ./dist
-COPY package*.json ./
-RUN npm install --production --depth 1
 RUN npm install -g serve
 EXPOSE 4000
 CMD [ "serve", "-s", "dist", "-l", "4000" ]

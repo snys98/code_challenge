@@ -3,7 +3,7 @@
 
 elasticsearch:
   client:
-    hosts: [ http://elasticsearch.dev.challenge ]
+    hosts: [ http://elasticsearch.dev.challenge:9200 ]
   other_settings:
     username: elastic
     password: ${ELASTIC_PASSWORD}

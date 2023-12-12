@@ -91,4 +91,4 @@ xpack.fleet.agentPolicies:
               - name: host
                 value: 0.0.0.0:8200
               - name: url
-                value: http://apm-server.dev.challenge
+                value: http://apm-server.dev.challenge:8200

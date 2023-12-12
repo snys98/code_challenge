@@ -150,9 +150,11 @@ services:
     restart: unless-stopped
     volumes:
       - ./mongo/config/mongod.conf:/etc/mongod.conf
+  
 networks:
   dev:
     name: dev
+    attachable: true
     driver: bridge
 
 volumes:
