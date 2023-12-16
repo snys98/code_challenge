@@ -67,7 +67,6 @@ services:
       - "traefik.http.routers.elasticsearch.tls=true"
       - "traefik.http.routers.elasticsearch.rule=Host(`elasticsearch.${DOMAIN_NAME}`)"
       - "traefik.http.services.elasticsearch.loadbalancer.server.port=9200"
-    dns: ${NET_PREFIX}.255
     build:
       context: elasticsearch/
       args:
@@ -96,7 +95,6 @@ services:
     hostname: logstash.${DOMAIN_NAME}
     dns_search:   
       - ${DOMAIN_NAME}
-    dns: ${NET_PREFIX}.255
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.logstash.entrypoints=http,https"
@@ -128,7 +126,6 @@ services:
     hostname: kibana.${DOMAIN_NAME}
     dns_search:   
       - ${DOMAIN_NAME}
-    dns: ${NET_PREFIX}.255
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.kibana.entrypoints=http,https"
@@ -154,7 +151,6 @@ services:
     hostname: apm-server.${DOMAIN_NAME}
     dns_search:   
       - ${DOMAIN_NAME}
-    dns: ${NET_PREFIX}.255
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.apm-server.entrypoints=http,https"
@@ -181,7 +177,6 @@ services:
     hostname: redis.${DOMAIN_NAME}
     dns_search:   
       - ${DOMAIN_NAME}
-    dns: ${NET_PREFIX}.255
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.redis.entrypoints=http,https"
@@ -205,7 +200,6 @@ services:
       - "traefik.http.routers.mongo.tls=true"
       - "traefik.http.routers.mongo.rule=Host(`mongo.${DOMAIN_NAME}`)"
       - "traefik.http.services.mongo.loadbalancer.server.port=27017"
-    dns: ${NET_PREFIX}.255
     image: mongo:5.0.17
     ports:
       - 27017:27017
@@ -304,7 +298,6 @@ services:
       - ${DOMAIN_NAME}
     profiles:
       - tester
-    dns: ${NET_PREFIX}.255
     image: tester:latest
     networks:
       dev:
