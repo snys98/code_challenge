@@ -5,4 +5,5 @@
 127.0.0.1 logstash.dev.challenge.io
 127.0.0.1 redis.dev.challenge.io
 127.0.0.1 mongo.dev.challenge.io
+127.0.0.1 traefik.dev.challenge.io
 127.0.0.1 dev.challenge.io

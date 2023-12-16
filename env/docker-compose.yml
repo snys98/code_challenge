@@ -1,4 +1,5 @@
 version: '3.7'
+name: dev_challenge_io
 
 services:
 
@@ -96,6 +97,11 @@ services:
   kibana:
     hostname: kibana.${DOMAIN_NAME}
     dns: 172.22.0.2
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.kibana.entrypoints=http,https"
+      - "traefik.http.routers.kibana.tls=true"
+      - "traefik.http.routers.kibana.rule=Host(`kibana.${DOMAIN_NAME}`)"
     build:
       context: kibana/
       args:
@@ -171,6 +177,72 @@ services:
     restart: always  
     dns:  
       - 127.0.0.1  
+
+  traefik:
+    hostname: traefik.${DOMAIN_NAME}
+    image: traefik:v3.0.0-beta5
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    command:
+      - "--global.sendanonymoususage=false"
+      - "--global.checknewversion=false"
+      - "--api=true"
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--api.debug=true"
+      - "--ping=true"
+      - "--log.level=DEBUG"
+      - "--log.format=common"
+      - "--accesslog=true"
+      - "--entrypoints.https.address=:443" 
+      - "--entrypoints.http.http.redirections.entryPoint.to=https"
+      - "--entrypoints.http.http.middlewares=compress@file"
+      - "--entrypoints.https.http.middlewares=compress@file"
+      - "--providers.docker=true"
+      - "--providers.docker.watch=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+      - "--providers.docker.useBindPortIP=false"
+      - "--providers.docker.network=dev"
+      - "--providers.file=true"
+      - "--providers.file.watch=true"
+      - "--providers.file.directory=/etc/traefik/config"
+      - "--providers.file.debugloggeneratedtemplate=true"
+    networks:
+      - dev
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=dev"
+
+      - "traefik.http.middlewares.gzip.compress=true"
+
+      - "traefik.http.routers.traefik-dashboard-secure.entrypoints=http,https"
+      - "traefik.http.routers.traefik-dashboard-secure.tls=true"
+      - "traefik.http.routers.traefik-dashboard-secure.rule=Host(`traefik.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.traefik-dashboard-secure.service=dashboard@internal"
+
+      - "traefik.http.routers.traefik-dashboard-api-secure.entrypoints=http,https"
+      - "traefik.http.routers.traefik-dashboard-api-secure.tls=true"
+      - "traefik.http.routers.traefik-dashboard-api-secure.rule=Host(`traefik.${DOMAIN_NAME}`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.traefik-dashboard-api-secure.service=api@internal"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./certs/:/certs/:ro
+      - ./traefik/config/:/etc/traefik/config/:ro
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider --proxy off localhost:8080/ping || exit 1"]
+      interval: 5s
+      retries: 10
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
 
   tester:
     hostname: tester.${DOMAIN_NAME}
