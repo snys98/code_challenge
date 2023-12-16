@@ -37,19 +37,19 @@ export class AppController {
         client: this.cache.store["client"],
         type: 'redis',
       }),
-      // () => this.http.pingCheck('apm', 'http://apm-server.dev.challenge:8200', {
+      // () => this.http.pingCheck('apm', 'http://apm-server.dev.challenge.io:8200', {
       //   validateStatus,
       //   timeout: 1000,
       // }),
-      // () => this.http.pingCheck('elasticsearch', 'http://elasticsearch.dev.challenge:9200', {
+      // () => this.http.pingCheck('elasticsearch', 'http://elasticsearch.dev.challenge.io:9200', {
       //   validateStatus,
       //   timeout: 1000,
       // }),
-      // () => this.http.pingCheck('logstash', 'http://logstash.dev.challenge:9600', {
+      // () => this.http.pingCheck('logstash', 'http://logstash.dev.challenge.io:9600', {
       //   validateStatus,
       //   timeout: 1000,
       // }),
-      // () => this.http.pingCheck('kibana', 'http://kibana.dev.challenge:5601', {
+      // () => this.http.pingCheck('kibana', 'http://kibana.dev.challenge.io:5601', {
       //   validateStatus,
       //   timeout: 1000,
       // })

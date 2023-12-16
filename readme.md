@@ -43,24 +43,24 @@ Prerequisites:
 .\start_containers.ps1
 ```
 
-2. open browser and access the frontend at [https://app.dev.challenge](https://app.dev.challenge) and the backend at [https://api.dev.challenge](https://api.dev.challenge), swagger endpoint is at `/swagger`.
+2. open browser and access the frontend at [https://app.dev.challenge.io](https://app.dev.challenge.io) and the backend at [https://api.dev.challenge.io](https://api.dev.challenge.io), swagger endpoint is at `/swagger`.
 
 > Note: This project will setup a fresh local dev environment with all the dependencies running in docker containers, these dependencies may conflict with your local environment, port reservations: [6379, 27017, 9200, 9300, 8200, 9600, 5044, 50000,, 5601].
 > If you already have some of the dependencies installed, please ensure they are not running before starting the project.
 
 list of endpoints:
 
-- [kibana](http://kibana.dev.challenge:5601)
-- [elasticsearch](http://elasticsearch.dev.challenge:9200)
-- [redis](http://redis.dev.challenge:6379)
-- [mongodb](http://mongo.dev.challenge:27017)
-- [apm-server](http://apm-server.dev.challenge:8200)
-- [logstash](http://logstash.dev.challenge:9600)
-- [api-health-check](https://api.dev.challenge)
-- [api-swagger](https://api.dev.challenge/swagger)
-  - [api-swagger-json](https://api.dev.challenge/swagger/json)
-  - [api-swagger-yaml](https://api.dev.challenge/swagger/yaml)
-- [app](https://app.dev.challenge)
+- [kibana](http://kibana.dev.challenge.io:5601)
+- [elasticsearch](http://elasticsearch.dev.challenge.io:9200)
+- [redis](http://redis.dev.challenge.io:6379)
+- [mongodb](http://mongo.dev.challenge.io:27017)
+- [apm-server](http://apm-server.dev.challenge.io:8200)
+- [logstash](http://logstash.dev.challenge.io:9600)
+- [api-health-check](https://api.dev.challenge.io)
+- [api-swagger](https://api.dev.challenge.io/swagger)
+  - [api-swagger-json](https://api.dev.challenge.io/swagger/json)
+  - [api-swagger-yaml](https://api.dev.challenge.io/swagger/yaml)
+- [app](https://app.dev.challenge.io)
 
 ## Development
 
@@ -83,10 +83,10 @@ Steps to run the project:
 9. Press `F1` and type `tasks: run task` and select `build all` task, new stack of `code_challenge` should be running, and status should be like this.
    ![1702223602760](images/readme/1702223602760.png)
 10. Press `F1` and type `tasks: run task` and select `migrate up` task for generating test data.
-11. Access the frontend at [https://app.dev.challenge](https://app.dev.challenge) and the backend at [https://api.dev.challenge](https://api.dev.challenge), swagger endpoint is at `/swagger`.
+11. Access the frontend at [https://app.dev.challenge.io](https://app.dev.challenge.io) and the backend at [https://api.dev.challenge.io](https://api.dev.challenge.io), swagger endpoint is at `/swagger`.
 
-> see `.\dev_env\docker-compose` file for docker container dependencies
-> see `.\dev_env\.env` file for elasticsearch and kibana passwords
+> see `.\env\docker-compose` file for docker container dependencies
+> see `.\env\.env` file for elasticsearch and kibana passwords
 > see `.\apps\api\.env.dev` file for api environment variables
 
 ## Testing

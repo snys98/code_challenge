@@ -1,4 +1,4 @@
-pwsh .\dev_env\init_dev_env.ps1
+pwsh .\env\init_dev_env.ps1
 if (!(Test-Path -Path .\apps\api\node_modules)) {
     npm --prefix .\apps\api install
 }else {
