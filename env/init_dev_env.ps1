@@ -1,12 +1,43 @@
-Write-Output "please make sure the following conditions are met before executing this script."
-Write-Output "1. run as *administrator*"
-Write-Output "2. have internet access to choco mirrors"
-Write-Output "3. local 80/443 port is not occupied (such as iis)"
-Write-Output "this script will instal a dev cert into you local machine and add it to trusted root store, so that you can access https://*.dev.challenge.io for your local development, you'll need to restart your browser after this script is executed to ensure the cert is loaded."
+function Test-Admin {  
+  $currentUser = New-Object Security.Principal.WindowsPrincipal $([Security.Principal.WindowsIdentity]::GetCurrent())  
+  $currentUser.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)  
+}  
+  
+if ((Test-Admin) -eq $false) {  
+  if ($elevated) {  
+    # tried to elevate, did not work, aborting  
+  }   
+  else {  
+    Start-Process powershell.exe -Verb RunAs -ArgumentList ('-file "{0}" -elevated' -f ($myinvocation.MyCommand.Definition))  
+  }  
+  exit  
+}  
+  
+'Running as administrator.'
+
+Write-Output "We are going to have several steps done to setup your local dev environment."
+Write-Output "1. install necessary tools such as choco, nodejs, openssl, docker, make sure you're having internet access to choco mirrors before execution"
+Write-Output "2. stop your local iss service if it's running"
+Write-Output "3. a dns server will be add into you docker network, so that *.dev.challenge.io can target to your local machine."
+Write-Output "4. a dev cert will be installed into you local machine trusted root store, so that you can access https://*.dev.challenge.io for local development, you'll need to restart your browser to ensure the cert is loaded."
+Write-Output "rerun this script will reset you local dev environment(no duplicate installations)."
 $continue = Read-Host -Prompt "enter 'y' to continue";
 if ($continue -ne "y") {
-    exit
+  exit
 }
+
+$ports = @(9200, 9300, 5044, 50000, 50000, 9600, 5601, 8200, 6379, 27017, 53, 8080, 80, 443)
+foreach ($port in $ports) {
+  $connection = Get-NetTCPConnection -LocalPort $port -ErrorAction SilentlyContinue
+  if ($connection && $continue) {
+    $process = Get-Process -Id $connection.OwningProcess -ErrorAction SilentlyContinue
+    if ($process.Name -eq "wslrelay" || $process.Name -like "*docker*") {
+      continue;
+    }
+    Write-Output "Port $port is using by other process $($process.Name) (ID: $($connection.OwningProcess)), execution path: $($process.Path), please release the port and retry."  
+  }
+}
+
 cd $PSScriptRoot
 
 # register a shared dev server to quick share files if necessary
@@ -19,51 +50,51 @@ cd $PSScriptRoot
 
 #region  tools function
 if (-not (Get-Module -ListAvailable -Name "Carbon")) {
-    Install-Module -Name 'Carbon' -AllowClobber
+  Install-Module -Name 'Carbon' -AllowClobber
 }
 Import-Module 'Carbon'
 function Check-Command($cmdname) {
-    return [bool](Get-Command -Name $cmdname -ErrorAction SilentlyContinue)
+  return [bool](Get-Command -Name $cmdname -ErrorAction SilentlyContinue)
 }
 #endregion
 
 if (-not (Check-Command choco)) {
-    $continue = Read-Host -Prompt "choco not installed, enter 'y' to install it, or press any key to exit";
-    if ($continue -ne "y") {
-        exit
-    }
-    Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-    Read-Host -Prompt "choco installed, please fully restart current process(vscode or powershell) and run this script again, press any key to exit ";
+  $continue = Read-Host -Prompt "choco not installed, enter 'y' to install it, or press any key to exit";
+  if ($continue -ne "y") {
     exit
+  }
+  Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+  Read-Host -Prompt "choco installed, please fully restart current process(vscode or powershell) and run this script again, press any key to exit ";
+  exit
 }
 
 if (-not (Check-Command node)) {
-    $continue = Read-Host -Prompt "nodejs not installed, enter 'y' to install it, or press any key to exit";
-    if ($continue -ne "y") {
-        exit
-    }
-    choco install nodejs-lts --version=18.12.1 -y
-    echo "nodejs installed";
+  $continue = Read-Host -Prompt "nodejs not installed, enter 'y' to install it, or press any key to exit";
+  if ($continue -ne "y") {
+    exit
+  }
+  choco install nodejs-lts --version=18.12.1 -y
+  echo "nodejs installed";
 }
 
 if (-not (Check-Command openssl)) {
-    $continue = Read-Host -Prompt "openssl not installed, enter 'y' to install it, or press any key to exit";
-    if ($continue -ne "y") {
-        exit
-    }
-    choco install openssl -y
-    echo "openssl installed";
+  $continue = Read-Host -Prompt "openssl not installed, enter 'y' to install it, or press any key to exit";
+  if ($continue -ne "y") {
+    exit
+  }
+  choco install openssl -y
+  echo "openssl installed";
 }
 
 if (-not (Check-Command docker)) {
-    $continue = Read-Host -Prompt "docker not installed, enter 'y' to install it, or press any key to exit";
-    if ($continue -ne "y") {
-        exit
-    }
-    choco install docker-desktop -y
-    docker version
-    Read-Host -Prompt "docker installed, please start docker manually then fully restart current process(vscode or powershell) and run this script again, press any key to exit ";
+  $continue = Read-Host -Prompt "docker not installed, enter 'y' to install it, or press any key to exit";
+  if ($continue -ne "y") {
     exit
+  }
+  choco install docker-desktop -y
+  docker version
+  Read-Host -Prompt "docker installed, please start docker manually then fully restart current process(vscode or powershell) and run this script again, press any key to exit ";
+  exit
 }
 
 #region cert

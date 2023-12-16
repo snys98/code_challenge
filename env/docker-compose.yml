@@ -2,21 +2,35 @@ version: '3.7'
 name: dev_challenge_io
 
 services:
+  dns-server:
+    hostname: dns-server.${DOMAIN_NAME}
+    image: defreitas/dns-proxy-server
+    environment:
+      MG_LOG_LEVEL: DEBUG
+      DOCKER_API_VERSION: 1.40
+      DPS_CONTAINER: 1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dns-server.entrypoints=http,https"
+      - "traefik.http.routers.dns-server.tls=true"
+      - "traefik.http.routers.dns-server.rule=Host(`dns-server.${DOMAIN_NAME}`)"
+      - "traefik.http.services.dns-server.loadbalancer.server.port=5380"
+    ports:
+      - "53:53/udp"
+      - "53:53/tcp"
+      - "5380:5380"
+    cap_add:  
+      - NET_ADMIN
+    volumes:
+      # - /var/run/docker.sock:/var/run/docker.sock
+      - ./dns/config/:/app/conf/
+    restart: unless-stopped
+    networks:
+      dev:
+        ipv4_address: ${NET_PREFIX}.255
+    dns:  
+      - 127.0.0.1
 
-  # The 'setup' service runs a one-off script which initializes users inside
-  # Elasticsearch — such as 'logstash_internal' and 'kibana_system' — with the
-  # values of the passwords defined in the '.env' file. It also creates the
-  # roles required by some of these users.
-  #
-  # This task only needs to be performed once, during the *initial* startup of
-  # the stack. Any subsequent run will reset the passwords of existing users to
-  # the values defined inside the '.env' file, and the built-in roles to their
-  # default permissions.
-  #
-  # By default, it is excluded from the services started by 'docker compose up'
-  # due to the non-default profile it belongs to. To run it, either provide the
-  # '--profile=setup' CLI flag to Compose commands, or "up" the service by name
-  # such as 'docker compose up setup'.
   setup:
     profiles:
       - setup
@@ -45,7 +59,15 @@ services:
 
   elasticsearch:
     hostname: elasticsearch.${DOMAIN_NAME}
-    dns: 172.22.0.2
+    dns_search:   
+      - ${DOMAIN_NAME}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.elasticsearch.entrypoints=http,https"
+      - "traefik.http.routers.elasticsearch.tls=true"
+      - "traefik.http.routers.elasticsearch.rule=Host(`elasticsearch.${DOMAIN_NAME}`)"
+      - "traefik.http.services.elasticsearch.loadbalancer.server.port=9200"
+    dns: ${NET_PREFIX}.255
     build:
       context: elasticsearch/
       args:
@@ -72,7 +94,15 @@ services:
 
   logstash:
     hostname: logstash.${DOMAIN_NAME}
-    dns: 172.22.0.2
+    dns_search:   
+      - ${DOMAIN_NAME}
+    dns: ${NET_PREFIX}.255
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.logstash.entrypoints=http,https"
+      - "traefik.http.routers.logstash.tls=true"
+      - "traefik.http.routers.logstash.rule=Host(`logstash.${DOMAIN_NAME}`)"
+      - "traefik.http.services.logstash.loadbalancer.server.port=9600"
     build:
       context: logstash/
       args:
@@ -96,7 +126,9 @@ services:
 
   kibana:
     hostname: kibana.${DOMAIN_NAME}
-    dns: 172.22.0.2
+    dns_search:   
+      - ${DOMAIN_NAME}
+    dns: ${NET_PREFIX}.255
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.kibana.entrypoints=http,https"
@@ -120,7 +152,15 @@ services:
 
   apm-server:
     hostname: apm-server.${DOMAIN_NAME}
-    dns: 172.22.0.2
+    dns_search:   
+      - ${DOMAIN_NAME}
+    dns: ${NET_PREFIX}.255
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.apm-server.entrypoints=http,https"
+      - "traefik.http.routers.apm-server.tls=true"
+      - "traefik.http.routers.apm-server.rule=Host(`apm-server.${DOMAIN_NAME}`)"
+      - "traefik.http.services.apm-server.loadbalancer.server.port=8200"
     build:
       context: apm-server/
       args:
@@ -139,7 +179,15 @@ services:
 
   redis:
     hostname: redis.${DOMAIN_NAME}
-    dns: 172.22.0.2
+    dns_search:   
+      - ${DOMAIN_NAME}
+    dns: ${NET_PREFIX}.255
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.redis.entrypoints=http,https"
+      - "traefik.http.routers.redis.tls=true"
+      - "traefik.http.routers.redis.rule=Host(`redis.${DOMAIN_NAME}`)"
+      - "traefik.http.services.redis.loadbalancer.server.port=6379"
     image: redis
     ports:
       - "6379:6379"
@@ -149,7 +197,15 @@ services:
 
   mongo:
     hostname: mongo.${DOMAIN_NAME}
-    dns: 172.22.0.2
+    dns_search:   
+      - ${DOMAIN_NAME}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mongo.entrypoints=http,https"
+      - "traefik.http.routers.mongo.tls=true"
+      - "traefik.http.routers.mongo.rule=Host(`mongo.${DOMAIN_NAME}`)"
+      - "traefik.http.services.mongo.loadbalancer.server.port=27017"
+    dns: ${NET_PREFIX}.255
     image: mongo:5.0.17
     ports:
       - 27017:27017
@@ -164,24 +220,12 @@ services:
     volumes:
       - ./mongo/config/mongod.conf:/etc/mongod.conf
 
-  dns:  
-    image: jpillora/dnsmasq  
-    command: -d -q -C /etc/dnsmasq.conf  
-    volumes:  
-      - ./dns/dnsmasq.conf:/etc/dnsmasq.conf  
-    ports:  
-      - "53:53/tcp"  
-      - "53:53/udp"  
-    cap_add:  
-      - NET_ADMIN  
-    restart: always  
-    dns:  
-      - 127.0.0.1  
-
   traefik:
     hostname: traefik.${DOMAIN_NAME}
+    dns_search:   
+      - ${DOMAIN_NAME}
     image: traefik:v3.0.0-beta5
-    restart: always
+    restart: unless-stopped
     ports:
       - 80:80
       - 443:443
@@ -203,7 +247,7 @@ services:
       - "--providers.docker=true"
       - "--providers.docker.watch=true"
       - "--providers.docker.exposedbydefault=false"
-      - "--providers.docker.endpoint=unix:///var/run/docker.sock"
+      - "--providers.docker.endpoint=tcp://dockersocketproxy:2375" 
       - "--providers.docker.useBindPortIP=false"
       - "--providers.docker.network=dev"
       - "--providers.file=true"
@@ -228,7 +272,6 @@ services:
       - "traefik.http.routers.traefik-dashboard-api-secure.rule=Host(`traefik.${DOMAIN_NAME}`) && PathPrefix(`/api`)"
       - "traefik.http.routers.traefik-dashboard-api-secure.service=api@internal"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./certs/:/certs/:ro
       - ./traefik/config/:/etc/traefik/config/:ro
     deploy:
@@ -243,12 +286,25 @@ services:
       driver: "json-file"
       options:
         max-size: "10m"
+    depends_on: 
+      - dockersocketproxy
+
+  dockersocketproxy:  
+    image: tecnativa/docker-socket-proxy  
+    networks:  
+      - dev  
+    volumes:  
+      - /var/run/docker.sock:/var/run/docker.sock  
+    environment:  
+      CONTAINERS: 1  
 
   tester:
     hostname: tester.${DOMAIN_NAME}
+    dns_search:   
+      - ${DOMAIN_NAME}
     profiles:
       - tester
-    dns: 172.22.0.2
+    dns: ${NET_PREFIX}.255
     image: tester:latest
     networks:
       dev:
@@ -263,8 +319,8 @@ networks:
     driver: bridge
     ipam:
       config:  
-        - subnet: 172.22.0.0/16  
-          gateway: 172.22.0.1  
+        - subnet: ${NET_PREFIX}.0/8
+          gateway: ${NET_PREFIX}.1  
 
 volumes:
   elasticsearch:

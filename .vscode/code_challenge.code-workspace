@@ -4,7 +4,8 @@
     "tasks": [
       {
         "label": "compose dev dependencies",
-        "command": "pwsh .\\env\\init_dev_env.ps1",
+        "detail": "please make sure the following conditions are met before executing this script.\n1. run as *administrator*\n2. have internet access to choco mirrors\n3. local 80/443 port is not occupied (such as iis)\nthis script will instal a dev cert into you local machine and add it to trusted root store, so that you can access https://*.dev.challenge.io for your local development, you'll need to restart your browser after this script is executed to ensure the cert is loaded.",
+        "command": "pwsh .\\env\\init_dev_env.ps1 ${input:confirm}",
         "type": "shell",
         "presentation": {
           "reveal": "always"
@@ -40,7 +41,7 @@
       },
       {
         "label": "build and compose all",
-        "command": "pwsh .\\build_all.ps1 && docker-compose up -d --build",
+        "command": "docker-compose up -d ${input:build}",
         "type": "shell",
         "presentation": {
           "reveal": "always"
@@ -70,6 +71,28 @@
           "cwd": "${workspaceFolder:apps/api}"
         },
         "problemMatcher": []
+      }
+    ],
+    "inputs": [
+      {
+        "id": "build",
+        "type": "pickString",
+        "description": "Do you want to add --build?",
+        "options": [
+          "",
+          "--build"
+        ],
+        "default": ""
+      },
+      {
+        "id": "confirm",
+        "type": "pickString",
+        "description": "This script have pre-conditions to run. Please confirm the comments in front of it before executing. continue?",
+        "options": [
+          "y",
+          "n"
+        ],
+        "default": "n"
       }
     ]
   },
