@@ -29,9 +29,9 @@ if ($continue -ne "y") {
 $ports = @(9200, 9300, 5044, 50000, 50000, 9600, 5601, 8200, 6379, 27017, 53, 8080, 80, 443)
 foreach ($port in $ports) {
   $connection = Get-NetTCPConnection -LocalPort $port -ErrorAction SilentlyContinue
-  if ($connection && $continue) {
+  if ($connection) {
     $process = Get-Process -Id $connection.OwningProcess -ErrorAction SilentlyContinue
-    if ($process.Name -eq "wslrelay" || $process.Name -like "*docker*") {
+    if ($process.Name -eq "wslrelay" -or $process.Name -like "*docker*") {
       continue;
     }
     Write-Output "Port $port is using by other process $($process.Name) (ID: $($connection.OwningProcess)), execution path: $($process.Path), please release the port and retry."  
@@ -115,3 +115,54 @@ if ($null -eq $cert) {
 
 docker-compose up setup -d
 docker-compose up -d
+
+##region dns
+
+$netAdapters = Get-NetAdapter | Where-Object { $_.Status -eq 'up' }
+
+foreach ($netAdapter in $netAdapters) {
+  $adapterExists = Get-NetAdapter -InterfaceIndex $netAdapter.ifIndex -ErrorAction SilentlyContinue
+  if ($null -eq $adapterExists) {
+    continue
+  }
+    
+  $dnsServers = (Get-DnsClientServerAddress -InterfaceIndex $netAdapter.ifIndex -ErrorAction SilentlyContinue).ServerAddresses
+
+  if ('127.0.0.1' -in $dnsServers) {
+    Write-Output "DNS server 127.0.0.1 already exists on adapter $($netAdapter.Name). No further config needed..."
+    exit
+  }
+}
+
+$selectedNetAdapter = $null
+while ($selectedNetAdapter -eq $null) {
+  Write-Output "Please select a network adapter:"
+  for ($i = 0; $i -lt $netAdapters.Count; $i++) {
+    Write-Output "[$i] $($netAdapters[$i].InterfaceDescription)"
+  }
+
+  $selectedIdx = Read-Host "Enter the index of the adapter"
+  if ($selectedIdx -ge 0 -and $selectedIdx -lt $netAdapters.Count) {
+    $selectedNetAdapter = $netAdapters[$selectedIdx]
+  }
+  else {
+    Write-Output "Invalid index. Please try again."
+  }
+}
+
+$adapterExists = Get-NetAdapter -InterfaceIndex $selectedNetAdapter.ifIndex -ErrorAction SilentlyContinue
+if ($null -eq $adapterExists) {
+  Write-Output "The selected adapter does not exist. Exiting..."
+  exit
+}
+
+$dnsServers = (Get-DnsClientServerAddress -InterfaceIndex $selectedNetAdapter.ifIndex -ErrorAction SilentlyContinue).ServerAddresses
+if ($dnsServers -eq $null) {
+  Set-DnsClientServerAddress -InterfaceIndex $selectedNetAdapter.ifIndex -ServerAddresses '127.0.0.1'
+}
+else {
+  Set-DnsClientServerAddress -InterfaceIndex $selectedNetAdapter.ifIndex -ServerAddresses ('127.0.0.1', $dnsServers)
+}
+
+
+#endregion

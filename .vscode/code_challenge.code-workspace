@@ -5,14 +5,14 @@
       {
         "label": "compose dev dependencies",
         "detail": "please make sure the following conditions are met before executing this script.\n1. run as *administrator*\n2. have internet access to choco mirrors\n3. local 80/443 port is not occupied (such as iis)\nthis script will instal a dev cert into you local machine and add it to trusted root store, so that you can access https://*.dev.challenge.io for your local development, you'll need to restart your browser after this script is executed to ensure the cert is loaded.",
-        "command": "pwsh .\\env\\init_dev_env.ps1 ${input:confirm}",
+        "command": "pwsh .\\env\\init_dev_env.ps1",
         "type": "shell",
         "presentation": {
           "reveal": "always"
         },
         "group": "none",
         "runOptions": {
-          "instanceLimit": 1
+          "instanceLimit": 1,
         },
         "problemMatcher": []
       },
