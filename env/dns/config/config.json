@@ -1,181 +1,80 @@
 {
-  "version" : 2,
-  "activeEnv" : "dev",
-  "webServerPort" : 0,
-  "dnsServerPort" : 0,
-  "defaultDns" : null,
-  "logLevel" : "",
-  "logFile" : "",
-  "registerContainerNames" : null,
-  "hostMachineHostname" : "",
-  "domain" : "",
-  "dpsNetwork" : false,
-  "dpsNetworkAutoConnect" : false,
-  "serverProtocol" : null,
-  "dockerHost" : null,
-  "resolvConfOverrideNameServers" : null,
-  "noRemoteServers" : null,
-  "noEntriesResponseCode" : null,
-  "remoteDnsServers" : [ ],
-  "envs" : [ {
-    "name" : "local",
-    "hostnames" : [ {
-      "id" : 1,
-      "hostname" : "elasticsearch.dev.challenge.io",
-      "ip" : "127.0.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    }, {
-      "id" : 2,
-      "hostname" : "kibana.dev.challenge.io",
-      "ip" : "127.0.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    }, {
-      "id" : 3,
-      "hostname" : "apm-server.dev.challenge.io",
-      "ip" : "127.0.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    }, {
-      "id" : 4,
-      "hostname" : "dns-server.dev.challenge.io",
-      "ip" : "127.0.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    }, {
-      "id" : 5,
-      "hostname" : "logstash.dev.challenge.io",
-      "ip" : "127.0.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    }, {
-      "id" : 6,
-      "hostname" : "redis.dev.challenge.io",
-      "ip" : "127.0.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    }, {
-      "id" : 7,
-      "hostname" : "mongo.dev.challenge.io",
-      "ip" : "127.0.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    }, {
-      "id" : 8,
-      "hostname" : "traefik.dev.challenge.io",
-      "ip" : "127.0.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    }, {
-      "id" : 9,
-      "hostname" : "dev.challenge.io",
-      "ip" : "127.0.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    }, {
-      "id" : 10,
-      "hostname" : "api.dev.challenge.io",
-      "ip" : "127.0.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    }, {
-      "id" : 11,
-      "hostname" : "app.dev.challenge.io",
-      "ip" : "127.0.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    } ]
-  }, {
-    "name" : "dev",
-    "hostnames" : [ {
-      "id" : 10001,
-      "hostname" : "elasticsearch.dev.challenge.io",
-      "ip" : "192.168.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    }, {
-      "id" : 10002,
-      "hostname" : "kibana.dev.challenge.io",
-      "ip" : "192.168.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    }, {
-      "id" : 10003,
-      "hostname" : "apm-server.dev.challenge.io",
-      "ip" : "192.168.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    }, {
-      "id" : 10004,
-      "hostname" : "dns-server.dev.challenge.io",
-      "ip" : "192.168.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    }, {
-      "id" : 10005,
-      "hostname" : "logstash.dev.challenge.io",
-      "ip" : "192.168.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    }, {
-      "id" : 10006,
-      "hostname" : "redis.dev.challenge.io",
-      "ip" : "192.168.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    }, {
-      "id" : 10007,
-      "hostname" : "mongo.dev.challenge.io",
-      "ip" : "192.168.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    }, {
-      "id" : 10008,
-      "hostname" : "traefik.dev.challenge.io",
-      "ip" : "192.168.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    }, {
-      "id" : 10009,
-      "hostname" : "dev.challenge.io",
-      "ip" : "192.168.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    }, {
-      "id" : 10010,
-      "hostname" : "app.dev.challenge.io",
-      "ip" : "127.0.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    }, {
-      "id" : 10011,
-      "hostname" : "api.dev.challenge.io",
-      "ip" : "127.0.0.1",
-      "target" : "acme.com",
-      "ttl" : 3,
-      "type" : "A"
-    } ]
-  } ]
+  "version": 2,
+  "activeEnv": "local",
+  "webServerPort": 0,
+  "dnsServerPort": 0,
+  "defaultDns": null,
+  "logLevel": "",
+  "logFile": "",
+  "registerContainerNames": null,
+  "hostMachineHostname": "",
+  "domain": "",
+  "dpsNetwork": false,
+  "dpsNetworkAutoConnect": false,
+  "serverProtocol": null,
+  "dockerHost": null,
+  "resolvConfOverrideNameServers": null,
+  "noRemoteServers": null,
+  "noEntriesResponseCode": null,
+  "remoteDnsServers": [],
+  "envs": [
+    {
+      "name": "local",
+      "hostnames": [
+        {
+          "id": 0,
+          "hostname": "host.docker.internal",
+          "ip": "127.0.0.1",
+          "target": "acme.com",
+          "ttl": 10,
+          "type": "A"
+        },
+        {
+          "id": 1,
+          "hostname": "dev.challenge.io",
+          "ip": null,
+          "target": "host.docker.internal",
+          "ttl": 10,
+          "type": "CNAME"
+        },
+        {
+          "id": 2,
+          "hostname": ".dev.challenge.io",
+          "ip": null,
+          "target": "dev.challenge.io",
+          "ttl": 10,
+          "type": "CNAME"
+        }
+      ]
+    },
+    {
+      "name": "dev",
+      "hostnames": [
+        {
+          "id": 10000,
+          "hostname": "host.docker.internal",
+          "ip": "127.0.0.1",
+          "target": "acme.com",
+          "ttl": 10,
+          "type": "A"
+        },
+        {
+          "id": 10001,
+          "hostname": "dev.challenge.io",
+          "ip": "192.168.0.1",
+          "target": "acme.com",
+          "ttl": 10,
+          "type": "A"
+        },
+        {
+          "id": 10002,
+          "hostname": ".dev.challenge.io",
+          "ip": null,
+          "target": "dev.challenge.io",
+          "ttl": 10,
+          "type": "CNAME"
+        }
+      ]
+    }
+  ]
 }

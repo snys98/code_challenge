@@ -9,6 +9,7 @@ export const AppConfig = {
   logger: {
     esNode: process.env.ES_NODE || 'http://elasticsearch.dev.challenge.io:9200',
     apmUrl: process.env.APM_URL || 'http://apm-server.dev.challenge.io:8200',
+    logStashUrl: process.env.LOGSTASH_URL || 'http://logstash.dev.challenge.io:9600',
     esUsername: process.env.ES_USERNAME || 'elastic',
     esPassword: process.env.ES_PASSWORD || 'challenge123456',
   },
@@ -20,6 +21,7 @@ export const AppConfig = {
   } as JwtModuleOptions
 } as AppConfig;
 export declare type LoggerModuleConfig = {
+  logStashUrl?: string;
   apmUrl?: string;
   esNode?: string;
   esUsername?: string;

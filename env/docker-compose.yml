@@ -226,7 +226,6 @@ services:
     command:
       - "--global.sendanonymoususage=false"
       - "--global.checknewversion=false"
-      - "--api=true"
       - "--api.dashboard=true"
       - "--api.insecure=true"
       - "--api.debug=true"
@@ -238,15 +237,14 @@ services:
       - "--entrypoints.http.http.redirections.entryPoint.to=https"
       - "--entrypoints.http.http.middlewares=compress@file"
       - "--entrypoints.https.http.middlewares=compress@file"
-      - "--providers.docker=true"
       - "--providers.docker.watch=true"
       - "--providers.docker.exposedbydefault=false"
-      - "--providers.docker.endpoint=tcp://dockersocketproxy:2375" 
+      - "--providers.docker.allowEmptyServices=false"
       - "--providers.docker.useBindPortIP=false"
+      - "--providers.docker.endpoint=tcp://dockersocketproxy:2375" 
       - "--providers.docker.network=dev"
-      - "--providers.file=true"
       - "--providers.file.watch=true"
-      - "--providers.file.directory=/etc/traefik/config"
+      - "--providers.file.directory=/etc/traefik"
       - "--providers.file.debugloggeneratedtemplate=true"
     networks:
       - dev
@@ -260,6 +258,8 @@ services:
       - "traefik.http.routers.traefik-dashboard-secure.tls=true"
       - "traefik.http.routers.traefik-dashboard-secure.rule=Host(`traefik.${DOMAIN_NAME}`)"
       - "traefik.http.routers.traefik-dashboard-secure.service=dashboard@internal"
+      # - "traefik.http.routers.traefik-dashboard-secure.middlewares=auth"
+      # - "traefik.http.middlewares.auth.basicauth.users=admin:${TRAEFIK_PASSWORD}"
 
       - "traefik.http.routers.traefik-dashboard-api-secure.entrypoints=http,https"
       - "traefik.http.routers.traefik-dashboard-api-secure.tls=true"
@@ -267,7 +267,7 @@ services:
       - "traefik.http.routers.traefik-dashboard-api-secure.service=api@internal"
     volumes:
       - ./certs/:/certs/:ro
-      - ./traefik/config/:/etc/traefik/config/:ro
+      - ./traefik/:/etc/traefik/:ro
     deploy:
       placement:
         constraints:

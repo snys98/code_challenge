@@ -11,6 +11,7 @@ import {
 } from '@nestjs/terminus';
 import { Cache } from 'cache-manager';
 import { RedisHealthIndicator } from '@songkeys/nestjs-redis-health';
+import { AppConfig } from './app.config';
 
 const validateStatus = (status) => {
   return status >= 200 && status < 503;
@@ -37,22 +38,33 @@ export class AppController {
         client: this.cache.store["client"],
         type: 'redis',
       }),
-      () => this.http.pingCheck('apm', 'http://apm-server.dev.challenge.io:8200', {
-        validateStatus,
-        timeout: 1000,
-      }),
-      () => this.http.pingCheck('elasticsearch', 'http://elasticsearch.dev.challenge.io:9200', {
-        validateStatus,
-        timeout: 1000,
-      }),
-      () => this.http.pingCheck('logstash', 'http://logstash.dev.challenge.io:9600', {
-        validateStatus,
-        timeout: 1000,
-      }),
-      () => this.http.pingCheck('kibana', 'http://kibana.dev.challenge.io:5601', {
-        validateStatus,
-        timeout: 1000,
-      })
+      async () => {
+        let data = {};
+        const result = (await this.http.responseCheck('apmServer', AppConfig.logger.apmUrl, (res) => {
+          data = res.data;
+          return validateStatus(res.status);
+        }/* , { auth: { username: AppConfig.logger.esUsername, password: AppConfig.logger.esPassword } } */));
+        result.apmServer = { ...data, status: result.apmServer.status };
+        return result;
+      },
+      async () => {
+        let data = {};
+        const result = (await this.http.responseCheck('elasticsearch', AppConfig.logger.esNode, (res) => {
+          data = res.data;
+          return validateStatus(res.status);
+        }, { auth: { username: AppConfig.logger.esUsername, password: AppConfig.logger.esPassword } }));
+        result.elasticsearch = { ...data, status: result.elasticsearch.status };
+        return result;
+      },
+      async () => {
+        let data = {};
+        const result = (await this.http.responseCheck('logstash', AppConfig.logger.logStashUrl, (res) => {
+          data = res.data;
+          return validateStatus(res.status);
+        }/* , { auth: { username: AppConfig.logger.esUsername, password: AppConfig.logger.esPassword } } */));
+        result.logstash = { ...data, status: result.logstash.status };
+        return result;
+      },
     ]);
   }
 
