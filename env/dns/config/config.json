@@ -1,80 +1,69 @@
 {
-  "version": 2,
-  "activeEnv": "local",
-  "webServerPort": 0,
-  "dnsServerPort": 0,
-  "defaultDns": null,
-  "logLevel": "",
-  "logFile": "",
-  "registerContainerNames": null,
-  "hostMachineHostname": "",
-  "domain": "",
-  "dpsNetwork": false,
-  "dpsNetworkAutoConnect": false,
-  "serverProtocol": null,
-  "dockerHost": null,
-  "resolvConfOverrideNameServers": null,
-  "noRemoteServers": null,
-  "noEntriesResponseCode": null,
-  "remoteDnsServers": [],
-  "envs": [
-    {
-      "name": "local",
-      "hostnames": [
-        {
-          "id": 0,
-          "hostname": "host.docker.internal",
-          "ip": "127.0.0.1",
-          "target": "acme.com",
-          "ttl": 10,
-          "type": "A"
-        },
-        {
-          "id": 1,
-          "hostname": "dev.challenge.io",
-          "ip": null,
-          "target": "host.docker.internal",
-          "ttl": 10,
-          "type": "CNAME"
-        },
-        {
-          "id": 2,
-          "hostname": ".dev.challenge.io",
-          "ip": null,
-          "target": "dev.challenge.io",
-          "ttl": 10,
-          "type": "CNAME"
-        }
-      ]
-    },
-    {
-      "name": "dev",
-      "hostnames": [
-        {
-          "id": 10000,
-          "hostname": "host.docker.internal",
-          "ip": "127.0.0.1",
-          "target": "acme.com",
-          "ttl": 10,
-          "type": "A"
-        },
-        {
-          "id": 10001,
-          "hostname": "dev.challenge.io",
-          "ip": "192.168.0.1",
-          "target": "acme.com",
-          "ttl": 10,
-          "type": "A"
-        },
-        {
-          "id": 10002,
-          "hostname": ".dev.challenge.io",
-          "ip": null,
-          "target": "dev.challenge.io",
-          "ttl": 10,
-          "type": "CNAME"
-        }
-      ]
-    }
-  ]
+  "version" : 2,
+  "activeEnv" : "local",
+  "webServerPort" : 0,
+  "dnsServerPort" : 0,
+  "defaultDns" : null,
+  "logLevel" : "",
+  "logFile" : "",
+  "registerContainerNames" : null,
+  "hostMachineHostname" : "",
+  "domain" : "",
+  "dpsNetwork" : false,
+  "dpsNetworkAutoConnect" : false,
+  "serverProtocol" : null,
+  "dockerHost" : null,
+  "resolvConfOverrideNameServers" : null,
+  "noRemoteServers" : null,
+  "noEntriesResponseCode" : null,
+  "remoteDnsServers" : [ ],
+  "envs" : [ {
+    "name" : "local",
+    "hostnames" : [ {
+      "id" : 0,
+      "hostname" : "host.docker.internal",
+      "ip" : "127.0.0.1",
+      "target" : "acme.com",
+      "ttl" : 10,
+      "type" : "A"
+    }, {
+      "id" : 1,
+      "hostname" : "dev.challenge.io",
+      "ip" : "127.0.0.1",
+      "target" : "127.0.0.1",
+      "ttl" : 10,
+      "type" : "A"
+    }, {
+      "id" : 2,
+      "hostname" : ".dev.challenge.io",
+      "ip" : "127.0.0.1",
+      "target" : "dev.challenge.io",
+      "ttl" : 10,
+      "type" : "A"
+    } ]
+  }, {
+    "name" : "dev",
+    "hostnames" : [ {
+      "id" : 10000,
+      "hostname" : "host.docker.internal",
+      "ip" : "127.0.0.1",
+      "target" : "acme.com",
+      "ttl" : 10,
+      "type" : "A"
+    }, {
+      "id" : 10001,
+      "hostname" : "dev.challenge.io",
+      "ip" : "192.168.0.1",
+      "target" : "acme.com",
+      "ttl" : 10,
+      "type" : "A"
+    }, {
+      "id" : 10002,
+      "hostname" : ".dev.challenge.io",
+      "ip" : "192.168.0.1",
+      "target" : "dev.challenge.io",
+      "ttl" : 10,
+      "type" : "A"
+    } ]
+  } ]
 }
