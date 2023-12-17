@@ -6,12 +6,12 @@ http:
     api:
       rule: "Host(`api.dev.challenge.io`)"
       service: api
-      entryPoints: ["http", "https"]
+      entryPoints: ["https"]
       tls: {}
     app:
       rule: "Host(`app.dev.challenge.io`)"
       service: app
-      entryPoints: ["http", "https"]
+      entryPoints: ["https"]
       tls: {}
   services:
     api:

@@ -11,7 +11,7 @@ services:
       DPS_CONTAINER: 1
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.dns-server.entrypoints=http,https"
+      - "traefik.http.routers.dns-server.entrypoints=https"
       - "traefik.http.routers.dns-server.tls=true"
       - "traefik.http.routers.dns-server.rule=Host(`dns-server.${DOMAIN_NAME}`)"
       - "traefik.http.services.dns-server.loadbalancer.server.port=5380"
@@ -63,7 +63,7 @@ services:
       - ${DOMAIN_NAME}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.elasticsearch.entrypoints=http,https"
+      - "traefik.http.routers.elasticsearch.entrypoints=https"
       - "traefik.http.routers.elasticsearch.tls=true"
       - "traefik.http.routers.elasticsearch.rule=Host(`elasticsearch.${DOMAIN_NAME}`)"
       - "traefik.http.services.elasticsearch.loadbalancer.server.port=9200"
@@ -97,7 +97,7 @@ services:
       - ${DOMAIN_NAME}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.logstash.entrypoints=http,https"
+      - "traefik.http.routers.logstash.entrypoints=https"
       - "traefik.http.routers.logstash.tls=true"
       - "traefik.http.routers.logstash.rule=Host(`logstash.${DOMAIN_NAME}`)"
       - "traefik.http.services.logstash.loadbalancer.server.port=9600"
@@ -128,7 +128,7 @@ services:
       - ${DOMAIN_NAME}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.kibana.entrypoints=http,https"
+      - "traefik.http.routers.kibana.entrypoints=https"
       - "traefik.http.routers.kibana.tls=true"
       - "traefik.http.routers.kibana.rule=Host(`kibana.${DOMAIN_NAME}`)"
     build:
@@ -153,7 +153,7 @@ services:
       - ${DOMAIN_NAME}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.apm-server.entrypoints=http,https"
+      - "traefik.http.routers.apm-server.entrypoints=https"
       - "traefik.http.routers.apm-server.tls=true"
       - "traefik.http.routers.apm-server.rule=Host(`apm-server.${DOMAIN_NAME}`)"
       - "traefik.http.services.apm-server.loadbalancer.server.port=8200"
@@ -179,7 +179,7 @@ services:
       - ${DOMAIN_NAME}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.redis.entrypoints=http,https"
+      - "traefik.http.routers.redis.entrypoints=https"
       - "traefik.http.routers.redis.tls=true"
       - "traefik.http.routers.redis.rule=Host(`redis.${DOMAIN_NAME}`)"
       - "traefik.http.services.redis.loadbalancer.server.port=6379"
@@ -196,7 +196,7 @@ services:
       - ${DOMAIN_NAME}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.mongo.entrypoints=http,https"
+      - "traefik.http.routers.mongo.entrypoints=https"
       - "traefik.http.routers.mongo.tls=true"
       - "traefik.http.routers.mongo.rule=Host(`mongo.${DOMAIN_NAME}`)"
       - "traefik.http.services.mongo.loadbalancer.server.port=27017"
@@ -254,14 +254,14 @@ services:
 
       - "traefik.http.middlewares.gzip.compress=true"
 
-      - "traefik.http.routers.traefik-dashboard-secure.entrypoints=http,https"
+      - "traefik.http.routers.traefik-dashboard-secure.entrypoints=https"
       - "traefik.http.routers.traefik-dashboard-secure.tls=true"
       - "traefik.http.routers.traefik-dashboard-secure.rule=Host(`traefik.${DOMAIN_NAME}`)"
       - "traefik.http.routers.traefik-dashboard-secure.service=dashboard@internal"
       # - "traefik.http.routers.traefik-dashboard-secure.middlewares=auth"
       # - "traefik.http.middlewares.auth.basicauth.users=admin:${TRAEFIK_PASSWORD}"
 
-      - "traefik.http.routers.traefik-dashboard-api-secure.entrypoints=http,https"
+      - "traefik.http.routers.traefik-dashboard-api-secure.entrypoints=https"
       - "traefik.http.routers.traefik-dashboard-api-secure.tls=true"
       - "traefik.http.routers.traefik-dashboard-api-secure.rule=Host(`traefik.${DOMAIN_NAME}`) && PathPrefix(`/api`)"
       - "traefik.http.routers.traefik-dashboard-api-secure.service=api@internal"

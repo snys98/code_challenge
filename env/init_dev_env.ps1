@@ -161,7 +161,8 @@ if ($dnsServers -eq $null) {
   Set-DnsClientServerAddress -InterfaceIndex $selectedNetAdapter.ifIndex -ServerAddresses '127.0.0.1'
 }
 else {
-  Set-DnsClientServerAddress -InterfaceIndex $selectedNetAdapter.ifIndex -ServerAddresses ('127.0.0.1', $dnsServers)
+  $dnsServers = ,"127.0.0.1" + $dnsServers
+  Set-DnsClientServerAddress -InterfaceIndex $selectedNetAdapter.ifIndex -ServerAddresses $dnsServers
 }
 
 

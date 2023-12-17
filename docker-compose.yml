@@ -12,7 +12,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.api.rule=Host(`api.${DOMAIN_NAME}`)"
-      - "traefik.http.routers.api.entrypoints=http,https"
+      - "traefik.http.routers.api.entrypoints=https"
       - "traefik.http.routers.api.tls=true"
     healthcheck:
       test: ["CMD-SHELL", "nc -z localhost 3000 || exit 1"]  
@@ -30,7 +30,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.app.rule=Host(`app.${DOMAIN_NAME}`)"
-      - "traefik.http.routers.app.entrypoints=http,https"
+      - "traefik.http.routers.app.entrypoints=https"
       - "traefik.http.routers.app.tls=true"
     healthcheck:
       test: ["CMD-SHELL", "nc -z localhost 4000 || exit 1"]
