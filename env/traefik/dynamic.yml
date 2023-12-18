@@ -1,3 +1,28 @@
+http:
+  middlewares:
+    compress:
+      compress: {}
+  routers:
+    api:
+      rule: "Host(`api.dev.challenge.io`)"
+      service: api
+      entryPoints: ["https"]
+      tls: {}
+    app:
+      rule: "Host(`app.dev.challenge.io`)"
+      service: app
+      entryPoints: ["https"]
+      tls: {}
+  services:
+    api:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:3000"
+    app:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:4000"
+
 tls:
   options:
     default:
